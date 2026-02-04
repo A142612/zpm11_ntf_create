@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="Validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="../../../pm11/_maintnotification/$metadata">
+        <edmx:Include Namespace="_MAINTNOTIFICATION" Alias="SAP"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="com.sap.pm11._maintnotification_van.v1" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/ApproveMaintWorkRequest_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/AssignWorkOrder_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/CalculateBreakDownDuration_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/ChangeMaintWorkReqRespy_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/ChangeMaintWorkReqScheduling_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/CompleteMaintNotification_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/CopyMaintenanceNotification_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/CreateWrkOrderFromWorkRequest_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/DetmMaintWrkReqOutpItms_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/PostponeMaintNotification_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/RecordFailureData_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/RejectMaintWorkRequest_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/SetMaintNotifToApprvlRequired_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/SetMaintNotifToInfoRequired_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/SetMaintNotifToInProcess_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/UnassignWorkOrder_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/TaskList_fc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/to_FailureEffect_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/to_Item_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType/to_Partner_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.xPM11x_MaintenanceNotificationType">
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Notification Header"/>
+                            <PropertyValue Property="ID" String="NotificationFacet"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Notification Items"/>
+                            <PropertyValue Property="ID" String="ItemsFacet"/>
+                            <PropertyValue Property="Target" AnnotationPath="to_Item/@UI.LineItem"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Notification Tasks"/>
+                            <PropertyValue Property="ID" String="TasksFacet"/>
+                            <PropertyValue Property="Target" String="UI.FACET$3$">
+                                <Annotation Term="Core.Messages">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="code" String="SADL_GW_EXP_VOCAN-000"/>
+                                            <PropertyValue Property="message" String="Navigation property '_Task' of annotation 'UI.FACET$3$' in proj./view '/PM11/_MaintenanceNotification' not found"/>
+                                            <PropertyValue Property="severity" String="error"/>
+                                        </Record>
+                                    </Collection>
+                                </Annotation>
+                            </PropertyValue>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Notification Activities"/>
+                            <PropertyValue Property="ID" String="ActivityFacet"/>
+                            <PropertyValue Property="Target" String="UI.FACET$4$">
+                                <Annotation Term="Core.Messages">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="code" String="SADL_GW_EXP_VOCAN-000"/>
+                                            <PropertyValue Property="message" String="Navigation property '_Activity' of annotation 'UI.FACET$4$' in proj./view '/PM11/_MaintenanceNotification' not found"/>
+                                            <PropertyValue Property="severity" String="error"/>
+                                        </Record>
+                                    </Collection>
+                                </Annotation>
+                            </PropertyValue>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="HeaderItems">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintenanceNotification"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="TechnicalObject"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="NotificationType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="NotificationText"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintNotificationLongText"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="NotificationCreationDateTime"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ReportedByUser"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Identification">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintenanceNotification"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="TechnicalObject"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintNotificationLongText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationCreationDateTime"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ReportedByUser"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintenanceNotification"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="TechnicalObject"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintNotificationLongText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationCreationDateTime"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ReportedByUser"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintNotifEffectCode_Type/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintNotifEffectCode_Type/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintenanceNotificationItemType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintenanceNotificationItemType/to_ItemActivity_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintenanceNotificationItemType/to_ItemCause_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintenanceNotificationPartnerType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintNotificationItemActivityType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.MaintNotificationItemCauseType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifDamageCodeVHType/MaintenanceNotification">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifDamageCodeVHType/CatalogType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifDamageCodeVHType/NotificationType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifDamageCodeVHType/CatalogProfile">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifEffectCodeGroupVHType/NotificationType">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifEffectCodeGroupVHType/CodeGroupStatus">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifEffectCodeGroupVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAddlCodeGroupText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCatalog"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAdditionalCatalogText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="CatalogProfile"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>InspectionCatalog</PropertyPath>
+                        <PropertyPath>InspSpecAdditionalCatalogText</PropertyPath>
+                        <PropertyPath>InspectionCodeGroup</PropertyPath>
+                        <PropertyPath>InspSpecAddlCodeGroupText</PropertyPath>
+                        <PropertyPath>CatalogProfile</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifEffectCodeVHType/NotificationType">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifEffectCodeVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCode"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAddlCodeGroupText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCatalog"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAdditionalCatalogText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="CatalogProfile"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>InspectionCatalog</PropertyPath>
+                        <PropertyPath>InspSpecAdditionalCatalogText</PropertyPath>
+                        <PropertyPath>InspectionCode</PropertyPath>
+                        <PropertyPath>InspectionCodeText</PropertyPath>
+                        <PropertyPath>InspectionCodeGroup</PropertyPath>
+                        <PropertyPath>InspSpecAddlCodeGroupText</PropertyPath>
+                        <PropertyPath>CatalogProfile</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifInspectionCodeVHType/CatalogType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifInspectionCodeVHType/NotificationType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintNotifInspectionCodeVHType/CatalogProfile">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintenanceOrderThumbnailURL">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.IsImageURL"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintOrderRespPartnerFunction">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintenanceOrderLongText">
+                <Annotation Term="UI.MultiLineText"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintenanceOrderType">
+                <Annotation Term="Common.Text" Path="MaintenanceOrderTypeName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintPriority">
+                <Annotation Term="Common.Text" Path="MaintPriorityDesc">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType/MaintOrdPersonResponsible">
+                <Annotation Term="Common.Text" Path="PersonResponsibleName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrderQuickVwType">
+                <Annotation Term="UI.QuickViewFacets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#MaintenanceOrderQuickView"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="MaintenanceOrderQuickView">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintenanceOrderLongText"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintenanceOrderType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintPriority"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="LatestAcceptableCompletionDate"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintOrdBasicStartDate"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintOrdBasicEndDate"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintOrdPersonResponsible"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ConcatenatedActiveSystStsName"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ConcatenatedActiveUserStsName"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Maintenance Order"/>
+                        <PropertyValue Property="TypeNamePlural" String="Maintenance Orders"/>
+                        <PropertyValue Property="ImageUrl" Path="MaintenanceOrderThumbnailURL"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrdForTechObjQuickVwType/MaintenanceOrderInternalID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrdForTechObjQuickVwType/Equipment">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrdForTechObjQuickVwType/MaintObjectLocAcctAssgmtNmbr">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintOrdForTechObjQuickVwType">
+                <Annotation Term="UI.PresentationVariant">
+                    <Record>
+                        <PropertyValue Property="RequestAtLeast">
+                            <Collection>
+                                <PropertyPath>ConcatenatedActiveUserStsName</PropertyPath>
+                                <PropertyPath>ConcatenatedActiveSystStsName</PropertyPath>
+                                <PropertyPath>MaintOrdBasicEndDate</PropertyPath>
+                                <PropertyPath>MaintOrdBasicStartDate</PropertyPath>
+                                <PropertyPath>LatestAcceptableCompletionDate</PropertyPath>
+                                <PropertyPath>MaintenancePlanningPlant</PropertyPath>
+                                <PropertyPath>MaintenanceOrderTypeName</PropertyPath>
+                                <PropertyPath>MaintenanceOrderType</PropertyPath>
+                                <PropertyPath>MaintenanceOrderDesc</PropertyPath>
+                                <PropertyPath>MaintenanceOrder</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWorkRequestDamageCodeVHType/NotificationType">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWorkRequestDamageCodeVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCode"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAddlCodeGroupText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCatalog"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAdditionalCatalogText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="CatalogProfile"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>InspectionCatalog</PropertyPath>
+                        <PropertyPath>InspSpecAdditionalCatalogText</PropertyPath>
+                        <PropertyPath>InspectionCode</PropertyPath>
+                        <PropertyPath>InspectionCodeText</PropertyPath>
+                        <PropertyPath>InspectionCodeGroup</PropertyPath>
+                        <PropertyPath>InspSpecAddlCodeGroupText</PropertyPath>
+                        <PropertyPath>CatalogProfile</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqDamageCodeGroupVHType/NotificationType">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqDamageCodeGroupVHType/CodeGroupStatus">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqDamageCodeGroupVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCodeGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAddlCodeGroupText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspectionCatalog"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="InspSpecAdditionalCatalogText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="CatalogProfile"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NotificationType"/>
+                            <Annotation Term="UI.Hidden"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>InspectionCatalog</PropertyPath>
+                        <PropertyPath>InspSpecAdditionalCatalogText</PropertyPath>
+                        <PropertyPath>InspectionCodeGroup</PropertyPath>
+                        <PropertyPath>InspSpecAddlCodeGroupText</PropertyPath>
+                        <PropertyPath>CatalogProfile</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/TaskListType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/TaskListGroup">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/TaskListGroupCounter">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecommendationUUID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/TaskListDesc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintenancePlanningPlantName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecommendationDesc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintPriorityDesc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintenanceActivityTypeName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecmdnFlreDtaOpgCntxtName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecmdnMaintainableItmDesc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/P_TechnicalObject">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/P_TechObjIsEquipOrFuncnlLoc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/P_MaintRecmdnFailureModeGroup">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/P_MaintRecmdnFailureMode">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/TaskList">
+                <Annotation Term="Common.Text" Path="TaskListDesc">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintenancePlanningPlant">
+                <Annotation Term="Common.Text" Path="MaintenancePlanningPlantName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintenanceRecommendation">
+                <Annotation Term="Common.Text" Path="MaintRecommendationDesc">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintPriority">
+                <Annotation Term="Common.Text" Path="MaintPriorityDesc">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintenanceActivityType">
+                <Annotation Term="Common.Text" Path="MaintenanceActivityTypeName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecmdnFlreDtaOpgCntxtUUID">
+                <Annotation Term="Common.Text" Path="MaintRecmdnFlreDtaOpgCntxtName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType/MaintRecmdnMaintainableItmUUID">
+                <Annotation Term="Common.Text" Path="MaintRecmdnMaintainableItmDesc">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListParameters/P_TechnicalObject">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListParameters/P_TechObjIsEquipOrFuncnlLoc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListParameters/P_MaintRecmdnFailureModeGroup">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListParameters/P_MaintRecmdnFailureMode">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_MaintWrkReqRecmddTskListType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="TaskList"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintenanceRecommendation"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintenanceRecommendationType"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Criticality" Path="MaintPriority"/>
+                            <PropertyValue Property="CriticalityRepresentation" EnumMember="UI.CriticalityRepresentationType/WithoutIcon"/>
+                            <PropertyValue Property="Value" Path="MaintPriority"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintenanceActivityType"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintRecmdnValidFromDateTime"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintRecmdnValidToDateTime"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintRecmdnFlreDtaOpgCntxtUUID"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaintRecmdnMaintainableItmUUID"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant">
+                    <Record>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="TaskList"/>
+                                    <PropertyValue Property="Descending" Bool="false"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/TechnicalObject">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/TechObjIsEquipOrFuncnlLoc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/ValidityEndDate">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/EquipUsagePeriodSequenceNumber">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/ValidityEndTime">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/ValidityStartDate">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/TechnicalObjectLabel">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/TechnicalObjectDescription">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/HierarchyNodeUniqueID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/ParentNodeUniqueID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/HierarchyNodeLevel">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/DrillDownState">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType/LocationName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_TechObjCstmHierVHType">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Custom Entity for Tech. Obj. Hier VH"/>
+                        <PropertyValue Property="TypeNamePlural" String="Technical Objects"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="AssetManufacturerName"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.C_WorkReqTextTemplateVHType/LongTextLanguage">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_PersWrkAgrmtSrchHelpType/PersonWorkAgrmtAuthznGrpg">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_PersWrkAgrmtSrchHelpType/AuthorizationGroup">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_PersWrkAgrmtSrchHelpType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/TechnicalObjectThumbnailURL">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.IsImageURL"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/MaintObjectInternalID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/FunctionalLocationLabelName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/FunctionalLocationName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/FuncnlLocPrimaryLabelName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/IdentifyingLabel">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/SecondIdentifyingLabel">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/TechObjectWithLeadingZeros">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/MaintObjectLocAcctAssgmtNmbr">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/SuperiorFunctionalLocationName">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/TechnicalObjectCategory">
+                <Annotation Term="Common.Text" Path="TechnicalObjectCategory_Text">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/TechnicalObjectType">
+                <Annotation Term="Common.Text" Path="TechnicalObjectType_Text">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/MaintenancePlant">
+                <Annotation Term="Common.Text" Path="PlantName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/AssetLocation">
+                <Annotation Term="Common.Text" Path="LocationName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType/SuperiorFuncnlLocLabelName">
+                <Annotation Term="Common.Text" Path="SuperiorFunctionalLocationName">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextFirst"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.I_TechObjWorkReqQuickVwType">
+                <Annotation Term="UI.QuickViewFacets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#TechObjQuickView"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="TechObjQuickView">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="TechObjIsEquipOrFuncnlLoc"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="TechnicalObjectCategory"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="TechnicalObjectType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaintenancePlant"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="SuperiorFuncnlLocLabelName"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Technical Object"/>
+                        <PropertyValue Property="TypeNamePlural" String="Technical Objects"/>
+                        <PropertyValue Property="TypeImageUrl" String="sap-icon://technical-object"/>
+                        <PropertyValue Property="ImageUrl" Path="TechnicalObjectThumbnailURL"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="TechnicalObjectDescription"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="TechnicalObjectLabel"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/CompleteMaintNotification/NotificationReferenceTime">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/CompleteMaintNotification/NotificationReferenceDate">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/RejectMaintWorkRequest/NotificationType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/RejectMaintWorkRequest/TextObjectCategory">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/RejectMaintWorkRequest/MaintNotifLongTextForEdit">
+                <Annotation Term="UI.MultiLineText"/>
+            </Annotations>
+            <Annotations Target="cds_xpm11x_ui_maintnotification.cds_xpm11x_ui_maintnotification_Entities/SetMaintNotifToInfoRequired/MaintNotifLongTextForEdit">
+                <Annotation Term="UI.MultiLineText"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

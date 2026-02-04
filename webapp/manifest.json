@@ -1,0 +1,197 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "pm11.zpm11nftcreate",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.5",
+      "toolsId": "7acf46b9-643d-4b97-977f-4341e96c297d"
+    },
+    "dataSources": {
+      "PM11__MAINTNOTIFICATION_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='%2FPM11%2F_MAINTNOTIFICATION_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/mainService/PM11__MAINTNOTIFICATION_VAN.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/pm11/_MAINTNOTIFICATION/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "PM11__MAINTNOTIFICATION_VAN"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.120.14",
+       "components": {
+                "sap.se.mi.plm.lib.attachmentservice.attachment": {
+                    "lazy": true
+                }
+            },
+      "libs": {
+        "sap.ui.layout": {
+                    "lazy": false
+                },
+                "sap.ui.core": {
+                    "lazy": false
+                },
+                "sap.m": {
+                    "lazy": false
+                },
+                "sap.ui.comp": {
+                    "lazy": false
+                },
+                "sap.ui.table": {
+                    "lazy": false
+                },
+                "sap.ndc": {
+                    "lazy": false
+                },
+                "sap.ui.generic.app": {
+                    "lazy": false
+                },
+        "sap.se.mi.plm.lib.attachmentservice": {
+                    "lazy": true
+                }
+      }
+    },
+    "componentUsages": {
+            "attachmentReuseComponent": {
+                "name": "sap.se.mi.plm.lib.attachmentservice.attachment",
+                "settings": {
+                    "id": "attachmenSserviceEmbComponent",
+                    "flavor": "withDocType",
+                    "attributeHandling": {
+                        "_VisibleAttributes": {
+                            "UPLOADEDBY": true,
+                            "UPLOADEDON": true,
+                            "FILESIZE": true,
+                            "ENABLELINK": true,
+                            "ATTACHMENTSTATUS": true,
+                            "ATTACHMENTTITLE": true,
+                            "SOURCE": true,
+                            "DIRDETAILS": true
+                        },
+                        "_VisibleActions": {
+                            "RENAME": true,
+                            "DELETE": true,
+                            "ADD": true,
+                            "ADDURL": true,
+                            "DOCTYPE": true,
+                            "CHECKIN": false,
+                            "CHECKOUT": false
+                        }
+                    }
+                }
+            }
+        },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "pm11.zpm11nftcreate.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+         "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay"
+                }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "type": "View",
+        "viewType": "XML",
+        "path": "pm11.zpm11nftcreate.view",
+        "async": true,
+        "viewPath": "pm11.zpm11nftcreate.view"
+      },
+      "routes": [
+        {
+          "name": "RouteCreateNotification",
+          "pattern": ":?query:",
+          "target": [
+            "TargetCreateNotification"
+          ]
+        },
+        {
+          "name": "draft",
+          "pattern": "CreateNotification/{DraftUUID}",
+          "greedy": false,
+          "target": [
+            "TargetCreateNotification"
+            ]
+        }
+      ],
+      "targets": {
+        "TargetCreateNotification": {
+          "id": "CreateNotification",
+          "name": "CreateNotification",
+          "viewType": "XML",
+           "viewLevel": 2,
+           "transition": "slide",
+           "clearControlAggregation": false,
+            "viewName": "CreateNotification",
+            "viewId": "CreateNotification"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "pm11.zpm11nftcreate.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

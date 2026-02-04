@@ -1,0 +1,7 @@
+<mvc:View controllerName="pm11.zpm11nftcreate.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <App id="app">
+    </App>
+</mvc:View>

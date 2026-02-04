@@ -1,0 +1,10 @@
+<!--
+
+    Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<ActionSheet id="CreateWrActionSheet" xmlns="sap.m" xmlns:core="sap.ui.core" class="sapUiNoContentPadding"
+	buttons="{/C_WorkReqTextTemplateVH}" placement="Bottom">
+	<Button id="CreateWrUseTemplateListButton" text="{WorkRequestTextTemplate}" icon="sap-icon://document-text"
+		press=".addTemplateToDescription"/>
+</ActionSheet>

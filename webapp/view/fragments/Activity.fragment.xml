@@ -1,0 +1,27 @@
+
+<core:FragmentDefinition  xmlns="sap.m" xmlns:core="sap.ui.core"   xmlns:smartForm="sap.ui.comp.smartform" xmlns:smartField="sap.ui.comp.smartfield" >
+	<smartForm:SmartForm id="createWrSmartFormActivity" editable="true" flexEnabled="false">
+						<smartForm:layout>
+							<smartForm:Layout id="createWrSmartFormLayoutActivity" emptySpanL="3" emptySpanM="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"/>
+						</smartForm:layout>
+						<smartForm:Group id="createWrSmartGroupActivity">
+	                      <smartForm:GroupElement id="createWrSmartDetectionCodeGroup">
+								<smartField:SmartField id="createWrSmartFieldDetectionCodeGroup" value="{MaintNotifActivityCodeGroup}" 
+									placeholder="{i18n>xfld.MaintNotifDetectionCodeGroup}" >
+									
+								</smartField:SmartField>
+							</smartForm:GroupElement>
+
+							<smartForm:GroupElement id="createWrSmartDetectionCode">
+								<smartField:SmartField id="createWrSmartFieldDetectionCode" value="{MaintNotificationActivityCode}" 
+									placeholder="{i18n>xfld.MaintNotifDetectionCode}" >
+									
+								</smartField:SmartField>
+							</smartForm:GroupElement>
+							<smartForm:GroupElement id="createWrSmartGroupElementAtyText">
+								<smartField:SmartField id="createWrSmartFieldAtyText"   value="{MaintNotifActyTxt}"
+									placeholder="{i18n>xfld.AtyText}"></smartField:SmartField>
+							</smartForm:GroupElement>
+					</smartForm:Group>
+					</smartForm:SmartForm>
+</core:FragmentDefinition>

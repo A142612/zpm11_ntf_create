@@ -1,0 +1,17 @@
+<!--
+
+    Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<MessageStrip id="createWrWarningStrip" type="Information" showIcon="true" text="{i18n>xmsg.openNotificationMessageStripText}">
+		<link>
+			<Link id="CreateWrCurrentNotificationsLink"
+				text="{ path: 'viewProperties>/currentWorkRequests' , formatter: '.formatter.showCurrentWorkRequestsMessage' }"
+				press="onShowCurrentWorkRequests"/>
+		</link>
+		<layoutData>
+			<layout:GridData id="CreateWrCurrentWorkRequestLayout" spanL="12" spanM="12" spanS="12"/>
+		</layoutData>
+	</MessageStrip>
+</core:FragmentDefinition>

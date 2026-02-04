@@ -1,0 +1,32 @@
+<!--
+
+    Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:View xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	controllerName="pm11.eam.maintenanceworkrequest.creates1.controller.fragments.CurrentWorkRequests">
+	<ResponsivePopover placement="Bottom" showHeader="true" id="CreateWrRespPopoverCurrentNotifs" afterClose="onAfterClose"
+		contentWidth="{= ${device>/system/phone} ? 'auto' : '35em'}" title="{i18n>xtit.similarWorkRequests}">
+		<content>
+			<List id="CreateWrListCurrentNotifications"
+				items="{ path: '/xPM11x_MaintenanceNotification', suspended: true , sorter: [ { path: 'NotifProcessingPhase', descending: true } , { path: 'NotificationCreationDate', descending: true }, { path: 'NotificationCreationTime', descending: true }],
+					parameters: {select: 'MaintenanceNotification,NotifProcessingPhase,NotificationCreationDate,NotificationCreationTime,NotificationText'}}"
+				growing="true" growingThreshold="5" growingScrollToLoad="true">
+				<items>
+					<ObjectListItem id="CreateWrCurrentWorkRequestId" icon="sap-icon://request" title="{MaintenanceNotification}"
+						press="onMNotificationItemPress">
+						<firstStatus>
+							<ObjectStatus id="CreateWrCurrentWorkRequestStatus"
+								text="{ path : 'NotifProcessingPhase' , formatter: '.formatter.formatWorkRequestStatus' }"></ObjectStatus>
+						</firstStatus>
+						<attributes>
+							<ObjectAttribute id="CreateWrCurrentWorkRequestNotificationText" text="{NotificationText}"/>
+							<ObjectAttribute id="CreateWrCurrentWorkRequestCreationDateTime"
+								text="{ parts:[ { path: 'NotificationCreationDate' } , {path: 'NotificationCreationTime'} ], formatter: '.formatter.formatDateTimeToString' }"/>
+						</attributes>
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+	</ResponsivePopover>
+</core:View>
