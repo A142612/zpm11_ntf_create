@@ -3,25 +3,24 @@
     Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
 
 -->
-<core:View xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
-	controllerName="pm11.zpm11nftcreate.controller.fragments.CurrentWorkRequests">
-	<ResponsivePopover placement="Bottom" showHeader="true" id="CreateWrRespPopoverCurrentNotifs" afterClose="onAfterClose"
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<ResponsivePopover placement="Bottom" showHeader="true" id="RespPopoverCurrentNotifs" afterClose="onAfterClose"
 		contentWidth="{= ${device>/system/phone} ? 'auto' : '35em'}" title="{i18n>xtit.similarWorkRequests}">
 		<content>
-			<List id="CreateWrListCurrentNotifications"
+			<List id="ListCurrentNotifications"
 				items="{ path: '/xPM11x_MaintenanceNotification', suspended: true , sorter: [ { path: 'NotifProcessingPhase', descending: true } , { path: 'NotificationCreationDate', descending: true }, { path: 'NotificationCreationTime', descending: true }],
 					parameters: {select: 'MaintenanceNotification,NotifProcessingPhase,NotificationCreationDate,NotificationCreationTime,NotificationText'}}"
 				growing="true" growingThreshold="5" growingScrollToLoad="true">
 				<items>
-					<ObjectListItem id="CreateWrCurrentWorkRequestId" icon="sap-icon://request" title="{MaintenanceNotification}" type="Navigation"
+					<ObjectListItem id="CurrentWorkRequestId" icon="sap-icon://request" title="{MaintenanceNotification}" type="Navigation"
 						press="onMNotificationItemPress">
 						<firstStatus>
-							<ObjectStatus id="CreateWrCurrentWorkRequestStatus"
+							<ObjectStatus id="CurrentWorkRequestStatus"
 								text="{ path : 'NotifProcessingPhase' , formatter: '.formatter.formatWorkRequestStatus' }"></ObjectStatus>
 						</firstStatus>
 						<attributes>
-							<ObjectAttribute id="CreateWrCurrentWorkRequestNotificationText" text="{NotificationText}"/>
-							<ObjectAttribute id="CreateWrCurrentWorkRequestCreationDateTime"
+							<ObjectAttribute id="CurrentWorkRequestNotificationText" text="{NotificationText}"/>
+							<ObjectAttribute id="CurrentWorkRequestCreationDateTime"
 								text="{ parts:[ { path: 'NotificationCreationDate' } , {path: 'NotificationCreationTime'} ], formatter: '.formatter.formatDateTimeToString' }"/>
 						</attributes>
 					</ObjectListItem>
@@ -29,4 +28,4 @@
 			</List>
 		</content>
 	</ResponsivePopover>
-</core:View>
+</core:FragmentDefinition>

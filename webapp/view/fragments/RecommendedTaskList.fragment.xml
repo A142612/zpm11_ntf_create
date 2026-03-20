@@ -1,0 +1,102 @@
+<!--
+
+    Copyright (C) 2009-2025 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartForm="sap.ui.comp.smartform"
+	xmlns:smartField="sap.ui.comp.smartfield"
+>
+    <Dialog
+        id="RTLDialog"
+        title="{i18n>xtit.RTLDialogTitle}"
+        class="sapUiResponsiveContentPadding" 
+        resizable="true"
+        draggable="true">
+        <VBox id="idRTLVBox">
+            <smartForm:SmartForm id="idRTLSmartForm">
+                <smartForm:Group id="idRTLGeneralGroup" >
+                    <smartForm:title>
+                        <core:Title id="idGeneralGroupTitle" text="{i18n>xfld.general}"/>
+                    </smartForm:title>
+                    <smartForm:GroupElement id="idRTLMaintenanceNotificationGroupElement">
+                        <smartField:SmartField id="idRTLMaintenanceNotificationSmartField" value="{MaintenanceNotification}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement id="idRTLPriorityGroupElement">
+                        <smartField:SmartField id="idRTLPrioritySmartField" value="{MaintPriority}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement id="idRTLMaintenancePlanningPlantGroupElement">
+                        <smartField:SmartField id="idRTLMaintenancePlanningPlantSmartField" value="{MaintenancePlanningPlant}" />
+                    </smartForm:GroupElement>
+                </smartForm:Group>
+                <smartForm:Group id="idRTLSelectionCriteriaGroup">
+                    <smartForm:title>
+                        <core:Title id="idSelectionCriterialGroupTitle" text="{i18n>xfld.recommendationSelectionCriteria}"/>
+                    </smartForm:title>
+                    <smartForm:GroupElement id="idRTLTechObjGroupElement">
+                        <smartField:SmartField id="idRTLTechObjSmartField" value="{TechnicalObjectLabel}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement id="idRTLCatalogProfileGroupElement">
+                        <smartField:SmartField id="idRTLCatalogProfileSmartField" value="{CatalogProfile}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement id="idRTLMaintNotificationCodeGroupGroupElement">
+                        <smartField:SmartField id="idRTLMaintNotificationCodeGroupSmartField" value="{MaintNotificationCodeGroup}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement id="idRTLMaintNotificationCodeGroupElement">
+                        <smartField:SmartField id="idRTLMaintNotificationCodeSmartField" value="{MaintNotificationCode}" />
+                    </smartForm:GroupElement>
+                </smartForm:Group>
+		    </smartForm:SmartForm>
+            <core:InvisibleText id="idTaskListTableACCLbl" text="{i18n>xmsg.taskListAccLabel}"/>
+            <smartTable:SmartTable id="idTaskListSmartTable" entitySet="C_MaintWrkReqRecmddTskListSet" tableBindingPath="Set"
+                header="{/#C_MaintWrkReqRecmddTskListType/TaskList/@sap:label}" enableExport="false"
+                enableAutoBinding="true" enableAutoColumnWidth="true">
+                <Table id="idTaskListResponsiveTable" mode="SingleSelectLeft" selectionChange="onSelectionChangeTaskListTable" includeItemInSelection="true"
+                    growing="true" growingThreshold="50" ariaLabelledBy="idTaskListTableACCLbl">
+                    <columns>
+                        <Column id="idRTLLongTextColumn">
+                            <customData>
+                                <core:CustomData key="p13nData" value='\{"columnKey": "LongText", "leadingProperty": "LongText", "columnIndex": 1}'/>
+                            </customData>
+                            <Label id="idRTLLabelLongText" text="{/#C_MaintWrkReqRecmddTskListType/LongText/@sap:label}"/>
+                        </Column>
+                        <Column id="idRTLColumn" width="13em">
+                            <customData>
+                                <core:CustomData key="p13nData" value='\{"columnKey": "MaintenanceRecommendationType", "leadingProperty": "MaintenanceRecommendationType", "columnIndex": 3}'/>
+                            </customData>
+                            <Label id="idRTLLabelMaintenanceRecommendationType" text="{/#C_MaintWrkReqRecmddTskListType/MaintenanceRecommendationType/@sap:label}"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem id="idRTLColumnListItem">
+                            <ExpandableText id="idRTLLongTextExpandableText" overflowMode="Popover" text="{LongText}" emptyIndicatorMode="On"/>
+                            <tnt:InfoLabel id="idRTLInfoLabelMaintenanceRecommendationType" text="{MaintRecmdnTypeDescription}"
+                                colorScheme="{path: 'MaintenanceRecommendationType', formatter: '.formatter.getColorSchemeInfoLabelRecommendationType'}"/>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </smartTable:SmartTable>
+        </VBox>
+        <beginButton>
+            <Button
+                id="idRTLButtonOK"
+                text="{i18n>xbut.ok}"
+                press="onPressSumbitSelectionTaskList"
+                type="Emphasized"
+                enabled="{viewProperties>/bEnableRecommendedSelection}"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                id="idRTLButtonClose"
+                text="{i18n>xbut.close}"
+                press="onPressCloseRecommendedTaskList"
+                type="Transparent"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

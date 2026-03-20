@@ -1,0 +1,188 @@
+<!--
+
+    Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+	<edmx:Reference Uri="/sap/opu/odata/pm11/_MAINTNOTIFICATION/$metadata">
+        <edmx:Include  Alias="Metadata"  Namespace="cds_xpm11x_ui_maintnotification"/>
+    </edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm"
+			Namespace="pm11.zpm11nftcreate.annotations.annotation1.cds_xpm11x_ui_maintnotification">
+			<Annotations Target="Metadata.xPM11x_MaintenanceNotificationType">
+				<Annotation Term="Common.SideEffects" Qualifier="detectionMethod">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>MaintNotifDetectionCodeGroup</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCode</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MaintNotifDetectionCodeGroup</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCodeGrpTxt</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCatalog</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="notificationType">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MaintPriority</PropertyPath>
+								<PropertyPath>MaintNotificationCatalog</PropertyPath>
+								<PropertyPath>MaintPriorityType</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCatalog</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCode</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCodeText</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCodeGroup</PropertyPath>
+								<PropertyPath>MaintNotifDetectionCodeGrpTxt</PropertyPath>
+								<PropertyPath>MaintenanceOrderType</PropertyPath>
+								<PropertyPath>MaintenanceOrderTypeName</PropertyPath>
+								<PropertyPath>WorkRequestTextTemplate</PropertyPath>
+								<PropertyPath>MaintNotifLongTextForEdit</PropertyPath>
+								<PropertyPath>PersonResponsible</PropertyPath>
+								<PropertyPath>CatalogProfile</PropertyPath>
+								<PropertyPath>MaintNotificationCodeGroup</PropertyPath>
+								<PropertyPath>MaintNotificationCode</PropertyPath>
+								<PropertyPath>MaintNotifCodgCatalogTypeCode</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>NotificationType</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="workcenter">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MainWorkCenterPlant</PropertyPath>
+								<PropertyPath>MainWorkCenterPlantName</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>MainWorkCenter</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="priority">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>MaintPriority</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>RequiredStartDate</PropertyPath>
+								<PropertyPath>RequiredEndDate</PropertyPath>
+								<PropertyPath>LatestAcceptableCompletionDate</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="notifProcessingContext">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>MaintNotifProcessingContext</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MaintenanceOrderType</PropertyPath>
+								<PropertyPath>MaintenanceOrderTypeName</PropertyPath>
+								<PropertyPath>MaintenancePlanningPlant</PropertyPath>
+								<PropertyPath>MainWorkCenter</PropertyPath>
+								<PropertyPath>MainWorkCenterPlant</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="MaintNotificationCodeGroup">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MaintNotificationCode</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>MaintNotificationCodeGroup</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Common.SideEffects" Qualifier="GlobalSideEffect">
+					<Record Type="Common.SideEffectsType">
+						<PropertyValue Property="SourceProperties">
+							<Collection>
+								<PropertyPath>TechnicalObjectLabel</PropertyPath>
+								<PropertyPath>TechObjIsEquipOrFuncnlLoc</PropertyPath>
+								<PropertyPath>TechnicalObject</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="TargetProperties">
+							<Collection>
+								<PropertyPath>MaintPriority</PropertyPath>
+								<PropertyPath>RequiredStartDate</PropertyPath>
+								<PropertyPath>RequiredEndDate</PropertyPath>
+								<PropertyPath>LatestAcceptableCompletionDate</PropertyPath>
+								<PropertyPath>TechObjIsEquipOrFuncnlLoc</PropertyPath>
+								<PropertyPath>TechnicalObject</PropertyPath>
+								<PropertyPath>TechnicalObjectType</PropertyPath>
+								<PropertyPath>TechnicalObjectCategory</PropertyPath>
+								<PropertyPath>CatalogProfile</PropertyPath>
+								<PropertyPath>PlantSection</PropertyPath>
+								<PropertyPath>ManufacturerPartTypeName</PropertyPath>
+								<PropertyPath>AssetManufacturerName</PropertyPath>
+								<PropertyPath>ABCIndicator</PropertyPath>
+								<PropertyPath>MaintenancePlant</PropertyPath>
+								<PropertyPath>AssetLocation</PropertyPath>
+								<PropertyPath>LocationName</PropertyPath>
+								<PropertyPath>MaintenancePlanningPlant</PropertyPath>
+								<PropertyPath>MaintenancePlannerGroup</PropertyPath>
+								<PropertyPath>MainWorkCenter</PropertyPath>
+								<PropertyPath>MainWorkCenterPlant</PropertyPath>
+								<PropertyPath>PersonResponsible</PropertyPath>
+								<PropertyPath>HierarchyNodeLevel</PropertyPath>
+								<PropertyPath>WorkRequestTextTemplate</PropertyPath>
+								<PropertyPath>MaintNotifLongTextForEdit</PropertyPath>
+								<PropertyPath>MaintenanceWorkCenter</PropertyPath>
+								<PropertyPath>MaintenanceWorkCenterPlant</PropertyPath>
+								<PropertyPath>AssetRoom</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="Metadata.xPM11x_MaintenanceNotificationType/TechnicalObjectLabel"/>
+			<Annotations Target="Metadata.C_TechObjCstmHierVHType/AssetManufacturerName">
+				<Annotation Term="UI.Hidden" Bool="true"/>
+			</Annotations>
+			<Annotations Target="Metadata.xPM11x_MaintenanceNotificationType/TechObjIsEquipOrFuncnlLoc">
+            <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+            </Annotations>
+			<Annotations Target="Metadata.C_TechObjCstmHierVHType/NmbrOfOpenMaintNotifications">
+				<Annotation Term="UI.Hidden" Bool="true"/>
+			</Annotations>
+			<Annotations Target="Metadata.C_TechObjCstmHierVHType/NumberOfOrders">
+				<Annotation Term="UI.Hidden" Bool="true"/>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

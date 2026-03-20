@@ -1,0 +1,37 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<!-- Object Header --> 
+	<ObjectHeader
+				title="{parts: ['ShortText', 'NotificationNumber'], formatter: '.formatter.formatDescriptionNumberAsText'}" iconDensityAware="false">
+		<statuses>
+			<ObjectStatus
+						text="{SystemStatus}"/>
+			<ObjectStatus
+						text="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToText'}"
+						state="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToState'}"
+						icon="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToIcon'}"/>
+		</statuses>
+		<attributes>
+			<!-- Object attribute Reporter in notification header -->
+			<ObjectAttribute
+						id="pmNotifObjectAttributeReporter"
+						title="Reporter"
+						text="{ReporterDisplay}" 
+						press="onPressReporter"
+						active="{viewProperties>/hasValidUser}"/>
+			<!-- Object attribute Timestamp in notification header -->
+			<ObjectAttribute
+						id="pmNotifObjectAttributeTimestamp"
+						title="Notification Timestamp"
+						text="{parts:[{path:'NotificationTimestamp'}], formatter:'.formatter.formatDateTimeToString'}"/>
+			<!--Extension Point to enhance object header (display and edit view)-->
+			<core:ExtensionPoint name="extEndObjectHeader" />						
+		</attributes>
+	</ObjectHeader>
+</core:FragmentDefinition>

@@ -33,6 +33,10 @@ server:
           - path: /sap
             url: https://www.z4q.dynu.net:8443
             client: '100'
+          - url: https://www.z4q.dynu.net:8443
+            client: '100'
+            authenticationType: basic
+            path: /sap/opu/odata/sap/EAM_NTF_CREATE/
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:
@@ -42,6 +46,16 @@ server:
             metadataPath: ./webapp/localService/mainService/metadata.xml
             mockdataPath: ./webapp/localService/mainService/data
             generateMockData: true
+          - urlPath: /sap/opu/odata/pm11/UI_CREATENOTIF
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+          - urlPath: /sap/opu/odata/sap/EAM_NTF_CREATE
+            metadataPath: ./webapp/localService/EAM_NTF_CREATE/metadata.xml
+            mockdataPath: ./webapp/localService/EAM_NTF_CREATE/data
+            generateMockData: true
         annotations:
           - localPath: ./webapp/localService/mainService/PM11__MAINTNOTIFICATION_VAN.xml
             urlPath: /sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='%2FPM11%2F_MAINTNOTIFICATION_VAN',Version='0001')/$value/
+          - localPath: ./webapp/localService/mainService/PM11__MAINTNOTIFICATION_VAN.xml
+            urlPath: /sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='%2FPM11%2FUI_CREATENOTIF_VAN',Version='0001')/$value/

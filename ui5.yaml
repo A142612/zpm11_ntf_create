@@ -19,6 +19,10 @@ server:
           - path: /sap
             url: https://www.z4q.dynu.net:8443
             client: '100'
+          - url: https://www.z4q.dynu.net:8443
+            client: '100'
+            authenticationType: basic
+            path: /sap/opu/odata/sap/EAM_NTF_CREATE/
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

@@ -1,0 +1,25 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:View 
+    busy="{appProperties]/busy}" 
+    busyIndicatorDelay="{appProperties]/delay}"
+	controllerName="pm11.zpm11nftcreate.controller.LinksForTechnicalObject" 
+	xmlns:core="sap.ui.core" 
+	xmlns:layout="sap.ui.layout"
+	xmlns="sap.m">
+
+    <layout:HorizontalLayout 
+    	allowWrapping="false" 
+    	class="sapUiNoContentPadding">
+    		<layout:content>
+				<Link text="{i18n>xlnk.overview}" press="onPressTechnicalObjectOverview" />
+				<Text text="{i18n>xfld.slash}" class="sapUiSmallMarginBeginEnd" visible="true" />
+				<Link enabled="{= ${viewProperties>/openNotifCount} > 0}" text="{ formatter : '.formatter.formatCurrentNotificationLink', 
+		                      path : 'viewProperties>/openNotifCount' }" press="onPressCurrentNotifications" />    			
+    		</layout:content>
+    </layout:HorizontalLayout>
+    	
+</core:View>

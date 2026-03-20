@@ -16,7 +16,7 @@
 						<smartForm:Group id="createWrSmartGroupTechnicalData">
 							<smartForm:GroupElement id="createWrSmartGroupElementTechnicalObject">
 								<smartField:SmartField textInEditModeSource="ValueListNoValidation" id="createWrSmartFieldTechObj" placeholder="{i18n>xfld.technicalObject}"
-									value="{TechnicalObjectLabel}" showSuggestion="true" showValueHelp="true" change=".onTechnicalObjectChanged">
+									value="{TechnicalObjectLabel}" showSuggestion="true" showValueHelp="false" change=".onTechnicalObjectChanged">
 									<smartField:layoutData>
 										<layout:GridData id="createWrlayoutTechnicalObject" spanL="{= %{device>/system/desktop} ? 6 : 5 }"
 											spanM="{= %{device>/system/desktop} ? 6 : 5 }" spanS="{= %{device>/system/desktop} ? 12 : 10 }"/>
@@ -70,7 +70,11 @@
 									enabled="{= %{MaintenancePlant} !== '' &amp;&amp; %{NotificationType} !== '' &amp;&amp; %{TechnicalObject} !== '' &amp;&amp; %{TechnicalObject} !== null &amp;&amp; %{TechObjIsEquipOrFuncnlLoc} !== '' }"/>-->
 							</smartForm:GroupElement>
 
-							
+							<smartForm:GroupElement id="createWrSmartGroupElementTaskList" visible="{=!${UICT_TaskList}}">
+								<smartField:SmartField id="createWrSmartFieldTaskList" value="{TaskList}" textInEditModeSource="ValueListNoValidation" />
+								<!--<Button id="createWrButtonRecommendedTaskList" tooltip="{i18n>xbut.GetRecommendedTaskLists}" text="{i18n>xbut.GetRecommendedTaskLists}" press=".onShowRecommendedTaskList"/>-->	
+							</smartForm:GroupElement>
+					
 						</smartForm:Group>
 					</smartForm:SmartForm>
 				</Panel>
@@ -180,18 +184,10 @@
 								</smartField:SmartField>
 							</smartForm:GroupElement>-->
 							
-							<!--<ComboBox id="createWrLinkUseTemplate" selectedKey="{WorkRequestTextTemplate}" editable="{longTextTemplates>/enabled}"-->
-								<!--	items="{longTextTemplates>/templates}" busy="{longTextTemplates>/busy}" change=".onLongtextTemplateChanged">-->
-								<!--	<core:Item id="createWrLinkUseTemplateItem" key="{= ${longTextTemplates>WorkRequestTextTemplate}.toUpperCase() }"-->
-								<!--		text="{longTextTemplates>WorkRequestTextTemplate}"/>-->
-								<!--</ComboBox>-->
 							
 							
 						</smartForm:Group>
 					</smartForm:SmartForm>
-
-					<!--<VBox width="100%" id="activityHBox" class="messageStripWidth" >
-					</VBox>	-->	
 
 
 				</Panel>
@@ -205,9 +201,9 @@
 								<Text id="createWrCreatedBy"
 									text="{ parts: [ { path:'viewProperties>/createdByUserName' },{ path:'CreatedByUser' } ] , formatter:'.formatter._concatIdAndDescription' }"></Text>
 							</smartForm:GroupElement>
-							<!--<smartForm:GroupElement id="createWrSmartGroupElementReportedBy">
+							<smartForm:GroupElement id="createWrSmartGroupElementReportedBy">
 								<smartField:SmartField textInEditModeSource="ValueListNoValidation" id="createWrSmartFieldReportedByUser" value="{ReportedByUser}" showValueHelp="true"></smartField:SmartField>
-							</smartForm:GroupElement>-->
+							</smartForm:GroupElement>
 							<smartForm:GroupElement id="createWrSmartGroupElementReportedOn">
 								<smartField:SmartField id="createWrSmartFieldReportedOnDateTime" value="{NotificationCreationDateTime}"></smartField:SmartField>
 							</smartForm:GroupElement>
@@ -215,7 +211,7 @@
 					</smartForm:SmartForm>
 				</Panel>
 				<layout:VerticalLayout id="createWrVeritcalLayout" width="100%">
-					<!--<core:ComponentContainer id="workRequestCreateAttachSrvCompContCreate" propagateModel="true" usage="attachmentReuseComponent"></core:ComponentContainer>-->
+					 <core:ComponentContainer id="workRequestCreateAttachSrvCompContCreate" propagateModel="true" usage="attachmentReuseComponent"></core:ComponentContainer> 
 				</layout:VerticalLayout>
 			</Panel>
 		</content>
@@ -226,6 +222,8 @@
 					type="{ path: 'message>/', formatter: '.formatter.buttonTypeFormatter' }" enabled="true" press="onMessagesButtonPress"></Button>
 				<DraftIndicator id="createWrDraftIndicator"></DraftIndicator>
 				<ToolbarSpacer id="createWrOverflowToolbarSpacer"/>
+				<Button id="createMyDraftButton" tooltip="{i18n>xbut.myDrafts}" text="{i18n>xbut.myDrafts}" enabled="true" visible="true"
+					press="onPressMyDraft"/>
 				
 				<Button id="createWrSubmitButton" tooltip="{i18n>xbut.submit}" text="{i18n>xbut.submit}" type="Emphasized" enabled="true" visible="true"
 					press="onPressSave"/>

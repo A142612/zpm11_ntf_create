@@ -1,0 +1,197 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="pm11.zpm11nftcreate.controller.DisplayExistingNotif"
+	xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:commons="sap.suite.ui.commons" xmlns:core="sap.ui.core"
+	 xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:form="sap.ui.layout.form"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+	xmlns:ushell="sap.ushell.ui" xmlns="sap.m">
+	<semantic:FullscreenPage id="pmNotifFullScreenPageS3" busy="{appProperties>/busy}" busyIndicatorDelay="{appProperties>/delay}" class="sapUiFioriObjectPage"
+		navButtonPress="onNavBack" showNavButton="true" title="{i18n>xtit.displayNotification}">
+		<semantic:content>
+			<core:Fragment fragmentName="pm11.zpm11nftcreate.view.fragments.NotificationHeader" type="XML"/>
+			<!--Extension Point to enhance the UI at the beginning of the form in display-->
+			<core:ExtensionPoint name="extAfterObjectHeader"/>
+			<IconTabBar class="sapUiResponsiveContentPadding" id="pmNotifIconTab" select="onIconTabFilterSelected" selectedKey="request">
+				<items>
+					<!-- ==== IconTab for general data in display==== -->
+					<!--IconTab for general data in display-->
+					<IconTabFilter id="pmNotifIconTabFilterGeneralData" key="request" text="{i18n>xtit.tabRequest}">
+						<content>
+							<!--<Panel width="auto" class="sapUiResponsiveMargin sapUiNoContentPadding"> -->
+							<form:SimpleForm id="pmNotifSimpleFormNotificationHeader" class="displayLayout" columnsL="5" columnsM="5" editable="false" emptySpanL="0" emptySpanM="0" labelSpanL="2"
+								labelSpanM="3" layout="ResponsiveGridLayout" width="100%">
+								<form:content>
+									<!--Extension Point to enhance the UI at the beginning of the form in display-->
+									<core:ExtensionPoint name="extBeginForm"/>
+									<Label/>
+										
+									<!-- ==== TechnicalObject ==== -->
+									<!-- It makes no sense to show only one not editable input field if all other information shown as test-->
+									<Label text="Technical Object"/>
+									<layout:VerticalLayout class="sapUiNoContentPadding">
+										<layout:content>
+											<Text class="sapUiSmallMarginBegin"	text="{parts: ['TechnicalObjectNumber', 'TechnicalObjectDescription'], formatter: '.formatter.formatNumberDescriptionAsText'}"/>
+											<!-- ==== Links: Overview / Count of Notifications ==== -->
+											<mvc:XMLView class="sapUiSmallMarginBegin sapUiSmallMarginBottom" displayBlock="true"
+												viewName="pm11.zpm11nftcreate.view.subview.LinksForTechnicalObject"
+												visible="{path: 'viewProperties>/techObjectValid', formatter: '.formatter.checkForValidValue'}" width="100%"/>
+										</layout:content>
+										<layout:layoutData>
+											<layout:GridData span="L7 M7 S12"/>
+										</layout:layoutData>
+									</layout:VerticalLayout>
+									
+									<!-- ==== Notification Types ==== -->
+									<Label text="Notification Type"></Label>
+									<Text class="sapUiSmallMarginBegin"	text="{parts: ['NotificationType', 'NotificationTypeText'], formatter: '.formatter.formatNumberDescriptionAsText'}"/>
+
+									<!-- ==== Longtext/Description ==== -->
+									<Label text="Longtext/Description"></Label>
+									<ScrollContainer class="sapUiSmallMarginBegin" height="10rem" horizontal="false" vertical="true" width="98%">
+										<content>
+											<layout:VerticalLayout content="{LongText01}">
+												<layout:HorizontalLayout>
+													<Text text="{ReadOnlyText}" visible="{IsHistorical}"/>
+													<Text text="{UpdateText}" visible="{= !${IsHistorical}}"/>
+												</layout:HorizontalLayout>
+											</layout:VerticalLayout>
+										</content>
+									</ScrollContainer>
+									<!-- ==== Location ==== -->
+									<Label text="Location" visible="{path: 'Location', formatter: '.formatter.checkForValidValue'}"></Label>
+									<Text class="sapUiSmallMarginBegin" text="{Location}" visible="{path: 'Location', formatter: '.formatter.checkForValidValue'}"/>
+									<!-- ==== Effect ==== -->
+									<Label text="Effect" visible="{path: 'Effect', formatter: '.formatter.checkForValidValue'}"></Label>
+									<Text class="sapUiSmallMarginBegin" text="{= ${Effect} + ' (' + ${EffectText} + ')'}"
+										visible="{path: 'Effect', formatter: '.formatter.checkForValidValue'}"/>
+									<!-- ==== Map ==== -->
+									<!--Extension Point for additonal locationdata in display-->
+									<core:ExtensionPoint name="extAdditionalLocationDataDisplay">
+										<!--               <Label/>-->
+										<!--<layout:VerticalLayout visible="{path: 'appProperties>/hasGPS', formatter: '.formatter.checkForValidValue'}" width="100%" class="sapUiSmallMarginBegin">-->
+										<!--	<layout:content>-->
+										<!--  <FlexBox alignItems="Stretch">-->
+										<!--    <items>-->
+										<!-- Map-View displayed on Desktop devices-->
+										<!--		<mvc:XMLView -->
+										<!--                       	busy="{appProperties>/busy}"-->
+										<!--                       	busyIndicatorDelay="{appProperties>/delay}"-->
+										<!--                           displayBlock="true" -->
+										<!--                           viewName="pm11.zpm11nftcreate.view.subview.GeoMap" -->
+										<!--                           id="pmNotifViewGeoMapView" -->
+										<!--                           cd:visibleOnDesktopAtStartup="true"-->
+										<!--                           cd:locationPropertyInContext="Location"/>-->
+										<!--    </items>-->
+										<!--</FlexBox>-->
+										<!--	</layout:content>-->
+										<!--</layout:VerticalLayout>                        					-->
+									</core:ExtensionPoint>
+									<!--Extension Point at the end of the form in display-->
+									<core:ExtensionPoint name="extEndForm"/>
+								</form:content>
+							</form:SimpleForm>
+							<!--</Panel>-->
+						</content>
+					</IconTabFilter>
+					<!-- ====  IconTab for Comments in display==== -->
+					<!-- IconTab for Comments in display-->
+					<IconTabFilter id="pmNotifIconTabFilterNotes" key="notes" text="{i18n>xtit.tabNotes}">
+						<content>
+							<!--<Panel headerText="{viewProperties>/NotesTitle}" width="auto" class="sapUiResponsiveMargin">-->
+							<!-- Notes displayed in a Timeline in display-->
+							<commons:Timeline content="{Notes}" enableBackendFilter="false" enableScroll="false" growing="false" busyIndicatorDelay="0" id="pmNotifTimelineTimelineNotes"
+								noDataText="{i18n>ymsg.noNotes}" showHeaderBar="true" showIcons="true" sortOldestFirst="true" width="auto">
+								<commons:content>
+									<commons:TimelineItem dateTime="{CreateTimestamp}" filterValue="{CreatorFullname}" icon="sap-icon://notes" text="{NoteText}" title="{Title}"
+										userName="{CreatorFullname}" userNameClickable="{IsValidUser}" userNameClicked="onTimelineUserNameClicked"></commons:TimelineItem>
+								</commons:content>
+							</commons:Timeline>
+							<!--</Panel>-->
+						</content>
+					</IconTabFilter>
+					<!-- ====  IconTab for Attachments in display ==== -->
+					<!-- IconTab for Attachments in display -->
+					<IconTabFilter id="pmNotifIconTabFilterAttachments" key="attachments" text="{i18n>xtit.tabAttachments}"
+						visible="{path: 'appProperties>/AttachmentsAvailable', formatter: '.formatter.checkForValidValue'}">
+						<content>
+							<!--<Panel width="auto" class="sapUiResponsiveMargin sapUiNoContentPadding">-->
+							<!-- Container for Attachments -->
+							<core:ComponentContainer id="pmNotifContainerAttachments" usage="attachmentReuseComponent"  />
+							<!--</Panel>-->
+						</content>
+					</IconTabFilter>
+					<!-- ====  IconTab for Contacts in display ==== -->
+					<!-- IconTab for Contacts in display-->
+					<IconTabFilter id="pmNotifIconTabFilterContacts" key="contacts" text="{i18n>xtit.tabContacts}">
+						<content>
+							<!--<Panel headerText="{viewProperties>/ContactsTitle}" width="auto" class="sapUiResponsiveMargin">    -->
+							<!-- Table of contacts in display-->
+							<Table id="pmNotifTableContactsTable" inset="false" items="{ path: 'Contacts', sorter: { path: 'RoleDescription' } }" busyIndicatorDelay="0" width="auto">
+								<headerToolbar>
+									<Toolbar>
+										<Title text="{viewProperties>/ContactsTitle}"/>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column>
+										<Text text="Full Name"/>
+									</Column>
+									<Column>
+										<Text text="Telephone Number"/>
+									</Column>
+									<Column demandPopin="true" minScreenWidth="Desktop">
+										<Text text="Email Address"/>
+									</Column>
+									<Column minScreenWidth="Desktop">
+										<Text text="Building"/>
+									</Column>
+									<Column minScreenWidth="Desktop">
+										<Text text="Floor"/>
+									</Column>
+									<Column minScreenWidth="Desktop">
+										<Text text="Room"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<ObjectIdentifier text="{RoleDescription}" title="{FullName}" titleActive="{=${IsValidUser}}" titlePress="onPressContact"/>
+											<Link press="onPressTelephoneNumber" text="{TelephoneNumber}"></Link>
+											<Link press="onPressEmail" text="{EmailAddress}"></Link>
+											<Text text="{Building}"/>
+											<Text text="{Floor}"/>
+											<Text text="{Roomnumber}"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+							<!--</Panel>-->
+						</content>
+					</IconTabFilter>
+					<!--Extension Point to enhance the Tabs in display-->
+					<core:ExtensionPoint name="extInIconTabBar"/>
+				</items>
+			</IconTabBar>
+			<!-- Extension Point for customer field extension below the tabs in display-->
+			<core:ExtensionPoint name="extAfterIconTabBar"/>
+		</semantic:content>
+		<semantic:messagesIndicator>
+			<semantic:MessagesIndicator press="onMessageButtonPressed"/>
+		</semantic:messagesIndicator>
+		<!--<semantic:customFooterContent>
+			<Button press="onEditPressed" text="{i18n>xbut.edit}" tooltip="{= !${viewProperties>/navToEditAllowed}? ${i18n>xtol.changeMode} : ''}"
+				type="Emphasized" visible="{= ${viewProperties>/navToEditAllowed} &amp;&amp; ${Deleted} === false &amp;&amp; ${Completed} === false}"/>
+			<Button press="onDeletePressed" text="{i18n>xbut.delete}" tooltip="{= !${viewProperties>/navToEditAllowed}? ${i18n>xtol.changeMode} : ''}"
+				visible="{= ${viewProperties>/navToEditAllowed} &amp;&amp; ${Deleted} === false &amp;&amp; ${Completed} === false}"/>
+		</semantic:customFooterContent>-->
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:saveAsTileAction>
+			<ushell:footerbar.AddBookmarkButton tileIcon="{share>/bookmarkIcon}" title="{share>/bookmarkTitle}"/>
+		</semantic:saveAsTileAction>
+	</semantic:FullscreenPage>
+</mvc:View>

@@ -1,0 +1,126 @@
+<!--
+
+    Copyright (C) 2009-2023 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:unified="sap.ui.unified">
+	<Dialog id="idEPMDialog" showHeader="false" contentHeight="100%" contentWidth="66rem" draggable="true" resizable="true"
+		class="sapUiNoContentPadding" busy="{$this>/busy}" stretch="{= %{device>/system/phone} }">
+		<content>
+				<NavContainer id="empNavContainer">
+		<Page id="idEpmPageEditConsequences" backgroundDesign="Standard" title="{i18n>xtit.EPMDialogTitle}">
+			<FlexBox id="idEmpFlexBoxCategoryListEdit" direction="Column" items="{epmModel>/list}">
+				<Panel id="idEpmPanelEdit"
+					headerText="{parts: [{ path: 'epmModel>consequence' },{path: 'epmModel>consequenceDescription'}] , formatter:'.concatIdAndDescription' }"
+					backgroundDesign="Transparent" expandable="true"
+					expanded="{:= ${epmModel>selectedConsequence} !== -1 &amp;&amp; ${epmModel>selectedLikelihood} !== -1 }" class="sapUiNoContentPadding">
+					<layout:Grid id="newGrid" width="100%">
+						<VBox id="idEpmVboxConsequence" class="sapUiNoContentPadding sapUiSmallMarginEnd">
+							<layoutData>
+								<layout:GridData id="idEpmGridDataConsequence" span="XL6 L6 M6 S12"/>
+							</layoutData>
+							<Title id="idEpmTitleEditConsequences" text="{i18n>xtit.severityTitle}" class="sapUiTinyMargin" wrapping="true"/>
+							<List id="idEpmListEditConsequences" items="{epmModel>severities}" backgroundDesign="Transparent" width="100%" mode="SingleSelectLeft"
+								selectionChange="onConsequenceListSelectionChange">
+								<StandardListItem id="idEpmStandardListItemConsequence" title="{epmModel>severityText}" wrapping="true" tooltip="{epmModel>severityText}"
+									selected="{epmModel>selected}"/>
+							</List>
+						</VBox>
+						<VBox id="idEpmVboxLikelihood" class="sapUiNoContentPadding sapUiSmallMarginEnd">
+							<layoutData>
+								<layout:GridData id="idEpmGridDataLikelihood" span="XL6 L6 M6 S12"/>
+							</layoutData>
+							<Title id="idEpmTitleEditLikelihoods" text="{i18n>xtit.occurenceTitle}" class="sapUiTinyMargin" wrapping="true"/>
+							<List id="idEpmListEditLikelihoods" items="{epmModel>likelihood}" backgroundDesign="Transparent" width="100%" mode="SingleSelectLeft"
+								selectionChange="onLikelihoodListSelectionChange">
+								<StandardListItem id="idEpmStandardListItemLikelihood" title="{epmModel>likelihoodText}" wrapping="true" tooltip="{epmModel>likelihoodText}"
+									selected="{epmModel>selected}"/>
+							</List>
+						</VBox>
+					</layout:Grid>
+					<VBox id="idEpmVboxPriority" class="sapUiResponsiveContentPadding sapUiSmallMarginBeginEnd sapUiMediumMarginBottom">
+						<ObjectStatus id="idEpmPriority" title="{i18n>xtxt.priority}"
+							text="{ parts:[ { path : 'epmModel>consequenceKey' } , { path : 'epmModel>selectedConsequence' },{ path : 'epmModel>selectedLikelihood' } ] , formatter:'.getPriorityForConsequenceLikelihood' }"
+							state="{ parts:[ { path : 'epmModel>consequenceKey' } , { path : 'epmModel>selectedConsequence' },{ path : 'epmModel>selectedLikelihood' } ] , formatter:'.setConsequenceGroupHighlight' }"/>
+						<Link id="idEpmLinkRemoveSelection" class="sapUiSmallMarginTop" text="{i18n>xtxt.removeSelection}" press=".removeSelection"></Link>
+					</VBox>
+				</Panel>
+			</FlexBox>
+		</Page>
+		<Page id="idEpmPageDisplayConsequences" title="{i18n>xtit.EPMDialogTitle}" showNavButton="{$this>/epmEnabled}" navButtonPress="onNavBack">
+			<Panel id="idEpmPanelAssessmentresult" headerText="{i18n>xtit.prioritizationResult}" backgroundDesign="Transparent"
+				class="sapUiContentPadding sapUiMediumMarginBottom">
+				<layout:Grid id="idEpmGridDisplayAssesmentResult">
+					<VBox id="idEpmVboxLeadingConsequence">
+						<layoutData>
+							<layout:GridData id="idEpmGridDataLeadingConsequence" span="XL6 L6 M6 S12"/>
+						</layoutData>
+						<Label id="idEpmLabelLeadingConsequence" text="{i18n>xtxt.leadingConsequence}:" tooltip="{i18n>xtxt.leadingConsequence}"
+							labelFor="idEpmleadingConsequence"/><Text id="idEpmleadingConsequence" tooltip="{ path: 'epmModel>/leadingConsequenceText'}" wrapping="true"
+							text="{ parts:[ { path: 'epmModel>/leadingConsequenceCategoryText'} , { path: 'epmModel>/leadingConsequenceText'} ] , formatter:'.concatIdAndDescription' }"/>
+					</VBox>
+					<VBox id="idEpmVboxLeadingLikelihood">
+						<layoutData>
+							<layout:GridData id="idEpmGridDataLeadingLikelihood" span="XL6 L6 M6 S12"/>
+						</layoutData>
+						<Label id="idEpmLabelLeadingLikelihood" text="{i18n>xtxt.leadingLikelihood}:" tooltip="{i18n>xtxt.leadingLikelihood}"
+							labelFor="idEpmleadingLikelihood"/><Text id="idEpmleadingLikelihood" tooltip="{ path: 'epmModel>/leadingLikelihoodText'}" wrapping="true"
+							text="{ path: 'epmModel>/leadingLikelihoodText'}"/>
+					</VBox>
+					<VBox id="idEpmVboxAssessedPriority">
+						<layoutData>
+							<layout:GridData id="idEpmGridDataAssessedPriority" span="XL6 L6 M6 S12"/>
+						</layoutData>
+						<Label id="idEpmLabelAssessedPriority" text="{i18n>xtxt.priority}:" tooltip="{i18n>xtxt.priority}" labelFor="idEpmPriorityAssessed"/>
+						<ObjectStatus id="idEpmObjectStatusPriorityAssessed" tooltip="{ path: 'epmModel>/maintPriorityDesc'}"
+							text="{ path: 'epmModel>/maintPriorityDesc' }" state="{parts: [{path: 'epmModel>/maintPriority'}], formatter: '.getCriticalityForPriority'}"/>
+					</VBox>
+					<VBox id="idEpmVboxLacd">
+						<layoutData>
+							<layout:GridData id="idEpmGridDataLacd" span="XL6 L6 M6 S12"/>
+						</layoutData>
+						<Label id="idEpmLabelLacd" text="{i18n>xtxt.lacd}:" labelFor="idEpmLacd" tooltip="{i18n>xtxt.lacd}"/><Text id="idEpmLacd" wrapping="true" tooltip="{epmModel>/lacdDate}" text="{epmModel>/lacdDate}"/>
+					</VBox>
+				</layout:Grid>
+			</Panel>
+			<FlexBox id="idEpmFlexBoxSelectedItems" direction="Column" items="{epmModel>/selectedItems}">
+				<Panel id="idEpmPanelSelectedItems"
+					headerText="{parts: [{ path: 'epmModel>consequenceText' },{path: 'epmModel>consequenceDescription'}] , formatter:'.concatIdAndDescription' }"
+					expandable="true" expanded="{= !${$this>epmEnabled} }" backgroundDesign="Transparent" class="sapUiContentPadding">
+					<layout:Grid id="idEpmGridSelectedItems">
+						<VBox id="idEpmVboxSelectedConsequence">
+							<layoutData>
+								<layout:GridData id="idEpmGridDataSelectedConsequence" span="XL6 L6 M6 S12"/>
+							</layoutData>
+							<Label id="idEpmLabelSelectedConsequence" text="{i18n>xtit.severityTitle}:" tooltip="{i18n>xtit.severityTitle}"
+								labelFor="idSelectedConsequence"/>
+							<Text id="idEpmTextSelectedConsequence" tooltip="{ path: 'epmModel>severityText'}" wrapping="true" text="{ path: 'epmModel>severityText'}"/>
+						</VBox>
+						<VBox id="idEpmVboxSelectedLikelihood">
+							<layoutData>
+								<layout:GridData id="idEpmGridDataSelectedLikelihood" span="XL6 L6 M6 S12"/>
+							</layoutData>
+							<Label id="idEpmLabelSelectedLikelihood" text="{i18n>xtit.occurenceTitle}:" tooltip="{i18n>xtit.occurenceTitle}"
+								labelFor="idEpmSelectedLikelihood"/><Text id="idEpmSelectedLikelihood" tooltip="{ path: 'epmModel>likelihoodText'}" wrapping="true" text="{ path: 'epmModel>likelihoodText'}"/>
+						</VBox>
+						<VBox id="idEpmVboxSelectedPriority">
+							<layoutData>
+								<layout:GridData id="idEpmGridDataSelectedPriority" span="XL6 L6 M6 S12"/>
+							</layoutData>
+							<Label id="idEpmLabelSelectedPriority" text="{i18n>xtxt.priority}:" tooltip="{i18n>xtxt.priority}" labelFor="idEpmSelectedPriority"/>
+							<ObjectStatus id="idEpmPrioritySelected" text="{ path : 'epmModel>priority' , formatter:'.getPriorityDescription' }"
+								state="{ path : 'epmModel>priority' , formatter:'.getCriticalityForPriority' }"/>
+						</VBox>
+					</layout:Grid>
+				</Panel>
+			</FlexBox>
+		</Page>
+	</NavContainer>
+		</content>
+		<buttons>
+			<Button id="idEpmAssessButton" type="Emphasized" text="{i18n>xbut.assess}" visible="{epmModel>/assesButtonVisible}" enabled="{epmModel>/assesButtonEnabled}"  press=".onPressAssess"/>
+			<Button id="idEpmApplyButton" type="Emphasized" text="{i18n>xbut.apply}" visible="{= !${epmModel>/assesButtonVisible} }" enabled="{$this>/epmEnabled}" press=".onPressApply"/>
+			<Button id="idEpmCancelButton" text="{i18n>xbut.cancel}" enabled="true" press=".onPressCancel"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

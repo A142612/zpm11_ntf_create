@@ -15,22 +15,48 @@
       "version": "1.18.5",
       "toolsId": "7acf46b9-643d-4b97-977f-4341e96c297d"
     },
+    "crossNavigation": {
+      "inbounds": {},
+      "outbounds": {
+        "toMaintenanceNotification": {
+          "semanticObject": "MaintenanceNotification",
+          "action": "displayFactSheet"
+        }
+      }
+    },
     "dataSources": {
       "PM11__MAINTNOTIFICATION_VAN": {
-        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='%2FPM11%2F_MAINTNOTIFICATION_VAN',Version='0001')/$value/",
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='%2FPM11%2FUI_CREATENOTIF_VAN',Version='0001')/$value/",
         "type": "ODataAnnotation",
         "settings": {
           "localUri": "localService/mainService/PM11__MAINTNOTIFICATION_VAN.xml"
         }
       },
       "mainService": {
-        "uri": "/sap/opu/odata/pm11/_MAINTNOTIFICATION/",
+        "uri": "/sap/opu/odata/pm11/UI_CREATENOTIF/",
         "type": "OData",
         "settings": {
           "annotations": [
-            "PM11__MAINTNOTIFICATION_VAN"
+            "PM11__MAINTNOTIFICATION_VAN",
+            "annotation1"
           ],
           "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "annotation1": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation1.xml",
+        "settings": {
+          "localUri": "annotations/annotation1.xml"
+        }
+      },
+      "EAM_NTF_CREATE": {
+        "uri": "/sap/opu/odata/sap/EAM_NTF_CREATE/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/EAM_NTF_CREATE/metadata.xml",
           "odataVersion": "2.0"
         }
       }
@@ -56,68 +82,68 @@
     "flexEnabled": true,
     "dependencies": {
       "minUI5Version": "1.120.14",
-       "components": {
-                "sap.se.mi.plm.lib.attachmentservice.attachment": {
-                    "lazy": true
-                }
-            },
+      "components": {
+        "sap.se.mi.plm.lib.attachmentservice.attachment": {
+          "lazy": true
+        }
+      },
       "libs": {
         "sap.ui.layout": {
-                    "lazy": false
-                },
-                "sap.ui.core": {
-                    "lazy": false
-                },
-                "sap.m": {
-                    "lazy": false
-                },
-                "sap.ui.comp": {
-                    "lazy": false
-                },
-                "sap.ui.table": {
-                    "lazy": false
-                },
-                "sap.ndc": {
-                    "lazy": false
-                },
-                "sap.ui.generic.app": {
-                    "lazy": false
-                },
+          "lazy": false
+        },
+        "sap.ui.core": {
+          "lazy": false
+        },
+        "sap.m": {
+          "lazy": false
+        },
+        "sap.ui.comp": {
+          "lazy": false
+        },
+        "sap.ui.table": {
+          "lazy": false
+        },
+        "sap.ndc": {
+          "lazy": false
+        },
+        "sap.ui.generic.app": {
+          "lazy": false
+        },
         "sap.se.mi.plm.lib.attachmentservice": {
-                    "lazy": true
-                }
+          "lazy": true
+        }
       }
     },
     "componentUsages": {
-            "attachmentReuseComponent": {
-                "name": "sap.se.mi.plm.lib.attachmentservice.attachment",
-                "settings": {
-                    "id": "attachmenSserviceEmbComponent",
-                    "flavor": "withDocType",
-                    "attributeHandling": {
-                        "_VisibleAttributes": {
-                            "UPLOADEDBY": true,
-                            "UPLOADEDON": true,
-                            "FILESIZE": true,
-                            "ENABLELINK": true,
-                            "ATTACHMENTSTATUS": true,
-                            "ATTACHMENTTITLE": true,
-                            "SOURCE": true,
-                            "DIRDETAILS": true
-                        },
-                        "_VisibleActions": {
-                            "RENAME": true,
-                            "DELETE": true,
-                            "ADD": true,
-                            "ADDURL": true,
-                            "DOCTYPE": true,
-                            "CHECKIN": false,
-                            "CHECKOUT": false
-                        }
-                    }
-                }
+      "attachmentReuseComponent": {
+        "name": "sap.se.mi.plm.lib.attachmentservice.attachment",
+        "settings": {
+          "id": "attachmenSserviceEmbComponent",
+          "flavor": "withDocType",
+          "attributeHandling": {
+            "_VisibleAttributes": {
+              "UPLOADEDBY": true,
+              "UPLOADEDON": true,
+              "FILESIZE": true,
+              "ENABLELINK": true,
+              "ATTACHMENTSTATUS": true,
+              "ATTACHMENTTITLE": true,
+              "SOURCE": true,
+              "DIRDETAILS": true
+            },
+            "_VisibleActions": {
+              "RENAME": true,
+              "DELETE": true,
+              "ADD": true,
+              "ADDURL": true,
+              "DOCTYPE": true,
+              "CHECKIN": false,
+              "CHECKOUT": false
             }
-        },
+          }
+        }
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
@@ -131,10 +157,17 @@
       },
       "": {
         "dataSource": "mainService",
-         "preload": true,
-                "settings": {
-                    "defaultBindingMode": "TwoWay"
-                }
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      },
+      "EAM_NTF_CREATE": {
+        "dataSource": "EAM_NTF_CREATE",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
       }
     },
     "resources": {
@@ -166,12 +199,26 @@
           ]
         },
         {
+          "name": "showCurrentWorkRequests",
+          "pattern": "showCurrentWorkRequests",
+          "parent": "RouteCreateNotification",
+          "greedy": false,
+          "target": [
+            "showCurrentWorkRequests"
+          ]
+        },
+        {
+          "pattern": "Display/{NotificationNumber}",
+          "name": "display",
+          "target": "display"
+        },
+        {
           "name": "draft",
           "pattern": "CreateNotification/{DraftUUID}",
           "greedy": false,
           "target": [
             "TargetCreateNotification"
-            ]
+          ]
         }
       ],
       "targets": {
@@ -179,11 +226,30 @@
           "id": "CreateNotification",
           "name": "CreateNotification",
           "viewType": "XML",
-           "viewLevel": 2,
-           "transition": "slide",
-           "clearControlAggregation": false,
-            "viewName": "CreateNotification",
-            "viewId": "CreateNotification"
+          "viewLevel": 2,
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "CreateNotification",
+          "viewId": "CreateNotification"
+        },
+        "showCurrentWorkRequests": {
+          "viewId": "CurrentWorRequestView",
+          "viewType": "XML",
+          "transition": "show",
+          "viewLevel": 4,
+          "viewPath": "pm11.zpm11nftcreate.view.fragments",
+          "targetParent": "app",
+          "controlId": "createWorkRequestPage",
+          "viewName": "CurrentWorkRequests",
+          "controlAggregation": "dependents",
+          "clearAggregation": true,
+          "parent": "TargetCreateNotification"
+        },
+        "display": {
+          "viewName": "DisplayExistingNotif",
+          "viewId": "display",
+          "viewLevel": 3,
+          "clearAggregation": false
         }
       }
     },

@@ -11,7 +11,9 @@ sap.ui.define([
     "pm11/zpm11nftcreate/util/Constants",
     "sap/ui/generic/app/ApplicationController",
     "pm11/zpm11nftcreate/util/DraftHandler",
-], (Controller, MessageToast, JSONModel, Filter, FilterOperator, formatter, Message, Library, BaseController, Constants, ApplicationController, DraftHandler) => {
+	"pm11/zpm11nftcreate/controls/TechnicalObjectValueHelp",
+	"pm11/zpm11nftcreate/util/Util"
+], (Controller, MessageToast, JSONModel, Filter, FilterOperator, formatter, Message, Library, BaseController, Constants, ApplicationController, DraftHandler,TechnicalObjectValueHelp, Util) => {
     "use strict";
 
     return BaseController.extend("pm11.zpm11nftcreate.controller.CreateNotification", {
@@ -67,19 +69,36 @@ sap.ui.define([
 			var oI18n = this.getOwnerComponent().getModel("i18n");
 			var oResourceBundle = oI18n.getResourceBundle();
 			this._i18n = oResourceBundle.getText.bind(oResourceBundle);
+
+			this._setupTechnicalObjectValueHelp();
+
             oRouter.getRoute("RouteCreateNotification").attachMatched(this.onCreateWorkRequestMatched, this);
             oRouter.getRoute("draft").attachMatched(this.onDraftRouteMatched, this);
-
-
-
-            // initialize the attachment component
-		/*	this.initAttachmentComponent({
-					mode: Constants.ATTACHMENT_SERVICE.MODE.CREATE,
-					objectType: Constants.ATTACHMENT_SERVICE.OBJECT_TYPES.NOTIFICATION,
-					objectKey: Constants.ATTACHMENT_SERVICE.TEMP_KEY
-				},
-				"workRequestCreateAttachSrvCompContCreate");*/ // attachment component id
         },
+		/**
+		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
+		 */
+		onExit: function () {
+			if (this._oTechnicalObjectValueHelp) {
+				this._oTechnicalObjectValueHelp.destroy();
+			}
+			if (this._oEPMDialog) {
+				this._oEPMDialog.destroy();
+			}
+			if (this._oCatalogProfileBinding) {
+				this._oCatalogProfileBinding.destroy();
+			}
+			if (this._oMaintNotificationCatalogBinding) {
+				this._oMaintNotificationCatalogBinding.destroy();
+			}
+			if (this._oDetectionCodeBinding) {
+				this._oDetectionCodeBinding.destroy();
+			}
+			if (this._oDraftHandler) {
+				this._oDraftHandler.destroy();
+			}
+
+		},
         onCreateWorkRequestMatched: function (oEvent) {
 			var that = this;
 			this._setup();
@@ -269,10 +288,10 @@ sap.ui.define([
 			}.bind(this)); */
 
 			// reported By user defaults to created by user
-			// if (!this.getView().getBindingContext().getProperty("ReportedByUser")) {
-			// 	this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/ReportedByUser",
-			// 		this.getView().getBindingContext().getProperty("CreatedByUser"));
-			// }
+			 if (!this.getView().getBindingContext().getProperty("ReportedByUser")) {
+				this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/ReportedByUser",
+			 		this.getView().getBindingContext().getProperty("CreatedByUser"));
+		    }
 
 			// if (this.getView().getBindingContext().getProperty("MaintNotifProcessingContext") === "01") {
 			// 	this._oLocalViewModel.setProperty("/emergencyNotification", true);
@@ -322,7 +341,7 @@ sap.ui.define([
 				this._oApplicationController.propertyChanged("MaintWorkRequestAttchKey", this.getView().getBindingContext());
 			}
 			// initialize the attachment component
-		/*	that.initAttachmentComponent({
+			that.initAttachmentComponent({
 					mode: Constants.ATTACHMENT_SERVICE.MODE.CREATE,
 					objectType: Constants.ATTACHMENT_SERVICE.OBJECT_TYPES.NOTIFICATION,
 					objectKey: that.getView().getBindingContext().getProperty("MaintWorkRequestAttchKey")
@@ -346,7 +365,7 @@ sap.ui.define([
 						});
 					}
 				}
-			this._oLocalViewModel.setProperty("/sMultiDraft", false); */
+			this._oLocalViewModel.setProperty("/sMultiDraft", false); 
 			that.getView().setBusy(false);
 			this._getLongTextTemplates().then(
 				function (aTemplates) {
@@ -452,6 +471,230 @@ sap.ui.define([
 		},
 
 		/**
+		 *  @param  {Object} oEvent 
+		 *  Event handler for long text change event
+		 */
+		onLongTextChanged: function () {},
+
+		/**
+		 * helper function to set the bind a custom value help with technical object smart field
+		 *  
+		 */
+		_setupTechnicalObjectValueHelp: function () {
+			var oTechnicalObjectSmartfield = this.getView().byId("createWrSmartFieldTechObj");
+			oTechnicalObjectSmartfield.attachEvent("innerControlsCreated", function () {
+				var aControls = oTechnicalObjectSmartfield.getInnerControls();
+				if (aControls.length > 0 && aControls[0] instanceof sap.m.Input) {
+					var oTechnicalObjectInput = aControls[0];
+
+					// Enable Value Help in inner control
+					oTechnicalObjectInput.setShowValueHelp(true);
+					// Ensure that the Technical Object Value Help is always
+					// enabled and that this behavior cannot be reset
+					oTechnicalObjectInput.setShowValueHelp = function () {
+						this.setProperty("showValueHelp", true);
+					}.bind(oTechnicalObjectInput);
+				}
+				// attach suggestion item selected event callback
+				if (oTechnicalObjectInput) {
+					// oTechnicalObjectInput.attachSuggestionItemSelected(function (oEvent) {
+					// 	if (oEvent.getParameter("selectedRow")) {
+					// 		// remove message if item is selected
+					// 		this._removeMessage("TechnicalObjectLabel");
+					// 	}
+
+					// }.bind(this));
+					// attach valuehelp request event and open the _oTechnicalObjectValueHelp
+					oTechnicalObjectInput.attachValueHelpRequest(function () {
+						if (!this._oTechnicalObjectValueHelp) {
+							this._oTechnicalObjectValueHelp = new TechnicalObjectValueHelp({
+								entitySetFlat: Constants.ENTITY.TECHNICAL_OBJECT_FLAT,
+								entityTypeFlat: Constants.ENTITY.TECHNICAL_OBJECT_FLAT_TYPE,
+								entitySetHierarchy: Constants.ENTITY.TECHNICAL_OBJECT_HIER,
+								entityTypeHierarchy: Constants.ENTITY.TECHNICAL_OBJECT_HIER_TYPE,
+								triggeringView: this.getView(),
+								hierarchyNodeLevel: this.getView().getBindingContext().getProperty("HierarchyNodeLevel")
+							});
+						}
+						// on Technical object selected set the other field in the model
+						this._oTechnicalObjectValueHelp.attachTechnicalObjectSelected(function (oEvent) {
+							this._removeMessage("TechnicalObjectLabel");
+							// set count of current work requests to 0
+							// this._oLocalViewModel.setProperty("/currentWorkRequests", 0);
+							var oSelectedTechnicalObject = oEvent.getParameters();
+							// hierarchy node level for hierarchy view 
+							this._oTechnicalObjectValueHelp.setHierarchyNodeLevel(oSelectedTechnicalObject.HierarchyNodeLevel);
+							// Technical Object Label Field 
+							this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechnicalObjectLabel",
+								oSelectedTechnicalObject.TechnicalObjectLabel);
+							// Technical Object Type (EAMS_EQUI / EAMS_FL) Field 
+							this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechObjIsEquipOrFuncnlLoc",
+								oSelectedTechnicalObject.TechObjIsEquipOrFuncnlLoc);
+							// assetLocation field (location Id)	
+							this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/AssetLocation",
+								oSelectedTechnicalObject.AssetLocation);
+							// assetLocation Name (location name)
+							this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/LocationName",
+								oSelectedTechnicalObject.LocationName);
+							this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechnicalObjectDescription",
+								oSelectedTechnicalObject.TechnicalObjectDescription);
+
+							// set current work requests
+							this.oModel.firePropertyChange({
+								path: "TechnicalObjectLabel",
+								context: this.getView().getBindingContext()
+							});
+
+						}, this);
+						var sValue = oTechnicalObjectInput.getValue();
+						var oWorkRequest = this.getView().getBindingContext().getObject();
+						if (sValue !== "" && oWorkRequest.TechnicalObject !== "" && (oWorkRequest.TechObjIsEquipOrFuncnlLoc === Constants.FUNCTIONAL_LOCATION ||
+								oWorkRequest.TechObjIsEquipOrFuncnlLoc === Constants.EQUIPMENT)) {
+							// if technical object is already selected in vh control then show hierarchy vew
+							this._toggleHierarchy();
+						} else {
+							// otherwise set search String to the entered text
+							this._toggleHierarchy({
+								TechnicalObjectLabel: sValue,
+								TechnicalObject: "",
+								TechObjIsEquipOrFuncnlLoc: ""
+							});
+						}
+						// open the dialog
+						this._oTechnicalObjectValueHelp.open();
+					}.bind(this));
+				}
+
+			}.bind(this));
+		},
+
+		/**
+		 * event handler for technical object changed event
+		 * @param  {Object} oEvent
+		 */
+		onTechnicalObjectChanged: function (oEvent) {
+			var sNewValue = oEvent.getParameter("newValue");
+			// if newvalue is empty then technical object is still valid
+			if (!sNewValue) {
+				// if newvalue is empty then technical object is still valid
+				this._clearTechnicalObjectContext(sNewValue);
+				this._removeMessage("TechnicalObjectLabel");
+			}
+			var oMessageManager = sap.ui.getCore().getMessageManager();
+			var aMessages = oMessageManager.getMessageModel().getData();
+			aMessages = this._getTargettedMessages(aMessages);
+			aMessages = this._removeTechnicalMessages(aMessages);
+			//this._setCurrentWorkRequestCount();
+			// this.getView().triggerValidateFieldGroup();
+		},
+
+		/**
+		 * helper method to clear the technical object context
+		 * clear AssetLocation , LocationName , currentWorkRequests , TechnicalObject, TechObjIsEquipOrFuncnlLoc
+		 * toggle the hierarchy view
+		 */
+		_clearTechnicalObjectContext: function (sNewValue) {
+			this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/AssetLocation",
+				"");
+			this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/LocationName",
+				"");
+			this._oLocalViewModel.setProperty("/currentWorkRequests", "");
+			this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechnicalObject", "");
+			this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechObjIsEquipOrFuncnlLoc", "");
+
+			// this._toggleHierarchy(sNewValue);
+		},
+
+		/**
+		 * event handler for bar code scanner
+		 * @param  {Object} oEvent
+		 * 
+		 */
+		onScanSuccess: function (oEvent) {
+			var oTechObjSmartField = this.getView().byId("createWrSmartFieldTechObj");
+			var oTechObj = oEvent.getParameter("text");
+			if (oTechObj && oTechObjSmartField) {
+				this.oModel.setProperty(this.getView().getBindingContext().getPath() + "/TechnicalObjectLabel",
+					oTechObj);
+				this._clearTechnicalObjectContext("");
+				sap.ui.getCore().byId("sapNdcBarcodeScannerDialog").close();
+				oTechObjSmartField.focus();
+				this.oModel.firePropertyChange({
+								path: "TechnicalObjectLabel",
+								context: this.getView().getBindingContext()
+							});
+			 
+			}
+
+		},
+
+		/**
+		 * event handler for Cancel button press event
+		 */
+		onPressCancel: function (oEvent) {
+			// show discard draft popover
+			this._oDraftHandler.confirmDiscardDraft(oEvent.getSource(), true);
+		},
+
+		/*
+		 * 
+		 * toggles to heirarchy view of technical object vh 
+		 * @param oValue map of technicalObject fields
+		 * @private
+		 */
+		_toggleHierarchy: function (oTechnicalObject) {
+			var oMap = oTechnicalObject ? oTechnicalObject : this.getView().getBindingContext().getObject();
+			if (this._oTechnicalObjectValueHelp) {
+				this._oTechnicalObjectValueHelp.setSearchString(oMap.TechnicalObjectLabel);
+				this._oTechnicalObjectValueHelp.setTechnicalObjectLabel(oMap.TechnicalObjectLabel);
+				this._oTechnicalObjectValueHelp.setTechnicalObject(oMap.TechnicalObject);
+				this._oTechnicalObjectValueHelp.setTechObjIsEquipOrFuncnlLoc(oMap.TechObjIsEquipOrFuncnlLoc);
+				this._oTechnicalObjectValueHelp.setIsValidTechnicalObject((oMap.TechnicalObject &&
+					oMap.TechObjIsEquipOrFuncnlLoc) ? true : false);
+				this._oTechnicalObjectValueHelp.setHierarchyNodeLevel(oMap.HierarchyNodeLevel);
+			}
+		},
+		/**
+		 * removes ui generated error messages
+		 * @param  {String} sField the filed on which message needs to be removed
+		 * 
+		 */
+		_removeMessage: function (sField, sType) {
+			var sTarget = this.getView().getBindingContext().getPath() + "/" + sField;
+			var sMessageType = sType || this.messageType.Error;
+			var aMessages = sap.ui.getCore().getMessageManager()
+				.getMessageModel().getData().filter(function (mItem) {
+					return mItem.target === sTarget && mItem.type === sMessageType;
+				});
+			sap.ui.getCore().getMessageManager().removeMessages(aMessages);
+			if (this._fieldsWithErrors > 0) {
+				this._fieldsWithErrors -= 1;
+			}
+		},
+		onPressMyDraft: function(oEvent){
+					var oParams = {},
+						sMessage=this._i18n("xmsg.savingDraftMsg");
+						oParams.DraftContext = false;
+						this.bcreateNew = false;
+					if(!this.bdigDraftBtn){
+					MessageToast.show(sMessage, {
+					closeOnBrowserNavigation: false
+					});
+					}
+					var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+						if (oCrossAppNavigator) {
+							oCrossAppNavigator.toExternal({
+								target: {
+									semanticObject: "MaintenanceWorkRequest",
+									action: "manage"
+								},
+								params: oParams
+							});
+						}
+				
+			},
+
+		/**
 		 * event handler for save button press event
 		 */
 		onPressSave: function () {
@@ -461,92 +704,8 @@ sap.ui.define([
 			// remove messages coming from server side
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			this.getView().setBusy(true);
-       /*  if (this._sActivityDraftUUID !== "") {
-			var sEntityPath = "/xPM11x_MaintenanceNotifActy(MaintNotificationActivity='10',MaintenanceNotification='',DraftUUID=guid'" + this._sActivityDraftUUID +"',IsActiveEntity=false)";
-	    	var actPath = "(MaintNotificationActivity='10',MaintenanceNotification='',DraftUUID=guid'" + this._sActivityDraftUUID +"',IsActiveEntity=false)";
-			var activityData = this.getView().getModel().getData(sEntityPath);
-			var sPath = this.getView().getBindingContext().getPath();
-			var oModel = this.getView().getModel();
-			var sDraftUUID =  oModel.getProperty(sPath + "/DraftUUID");
-			sPath = "/" + Constants.ENTITY.WORK_REQUEST_TP + "(MaintenanceNotification='',DraftUUID=guid'" + sDraftUUID + "',IsActiveEntity=false)";
-
-
-			if (activityData && activityData.MaintNotifActivityCodeGroup === '' && activityData.MaintNotificationActivityCode === '' && activityData.MaintNotifActyTxt ==='' ) {
-				this.getView().getModel().remove(sEntityPath, {
-					success: function () {
-						// successfully deleted activity draft
-						 this._activateDraft();
-					}.bind(this),
-					error: function () {
-						// error deleting activity draft
-					}
-				});
-				return ;
-				var activityContext = this.getView().getModel().getContext(sEntityPath);
-				activityContext.delete();
-
-			//	this._oDraftHandler.discardDraft(sPath, {expand: sEntityPath}).then(function(){ this._activateDraft();	}.bind(this));
-				//return;
-				//this._oDraftHandler.discard(activityContext);
-			}
-	} */
         this._activateDraft();
-          /*  var sPath = this.getView().getBindingContext().getPath();
-			var oModel = this.getView().getModel();
-			var sDraftUUID =  oModel.getProperty(sPath + "/DraftUUID");
-			if(sPath && oModel){
-				this._sMaintNotifDetectionCodeGroup = oModel.getProperty(sPath + "/MaintNotifDetectionCodeGroup");
-				
-				if(this._sMaintNotifDetectionCodeGroup !== ""){
-					oModel.setProperty(sPath + "/MaintNotifDetectionCodeGroup", "");
-					oModel.setProperty(sPath + "/MaintNotifDetectionCatalog", "");
-					// set detection code to empty if detection code group is empty
-					
-				   
-			}
-			 this._sMaintNotifDetectionCode = oModel.getProperty(sPath + "/MaintNotifDetectionCode");
-					if(this._sMaintNotifDetectionCode !== ""){
-						oModel.setProperty(sPath + "/MaintNotifDetectionCode", "");}}
-						var oNotifActivities =  [{MaintNotificationActivity: "0010",
-							  MaintenanceNotification: "",
-							  MaintenanceNotificationItem: "",
-							  MaintNotifActivitySortNumber: "",
-							  MaintNotifActyTxt: "",
-				              MaintNotifActivityCodeGroup: this._sMaintNotifDetectionCodeGroup,
-							  MaintNotificationActivityCode: this._sMaintNotifDetectionCode
-
-						}];
-						
-			      oModel.setProperty(sPath + "/to_Activity", oNotifActivities);*/
-		/*	var that = this;
-		  var oDefaultParams = {
-				 MaintNotificationActivity: "0010",
-				 MaintenanceNotification: "",
-				 MaintenanceNotificationItem: "",
-				 MaintNotifActivitySortNumber: "",
-				 MaintNotifActyTxt: "sdf dsfd",
-				 MaintNotifActivityCodeCatalog: "A",
-				MaintNotifActivityCodeGroup: this._sMaintNotifDetectionCodeGroup,
-				 MaintNotificationActivityCode: this._sMaintNotifDetectionCode
-			};*/
-		// this._oApplicationController.getTransactionController().getDraftController().createNewDraftEntity(
-			//		Constants.ENTITY.WORK_REQUEST_TP, "/" + Constants.ENTITY.WORK_REQUEST_TP + "(MaintenanceNotification='',DraftUUID=guid'" + sDraftUUID + "',IsActiveEntity=false)/to_Activity",  oDefaultParams, true, {sRootExpand: true})
-			//	.then(function (oResponse) {
-					//that._hidePlaceHolder();
-					//return Promise.resolve(oResponse.data.DraftUUID);
-				//	that._sActivityDraftUUID = oResponse.data.DraftUUID;
-					// fire the activate action of draft
-			//var oActivateDraft = that._oDraftHandler.activateDraft(that.getView()
-			//	.getBindingContext(), true /*LenientSave*/ );
-			//var oPrepareDraft = that._oApplicationController.getTransactionController().getDraftController().saveAndPrepareDraftEntity(
-				//that.getView().getBindingContext(), {});
-			//oPrepareDraft.then(function () {
-
-			
-			//	});
-
-			//});
-			
+        
 		},
 		_activateDraft: function () {
 			var sPath = this.getView().getBindingContext().getPath();
@@ -649,11 +808,6 @@ sap.ui.define([
 		}
 			}
 			
-		//	this._oApplicationController.getTransactionController().getDraftController().saveAndPrepareDraftEntity(this.getView().getBindingContext(), oDefaultParams, '/to_Activity' ).then(function(oResp){
-         //    that._oApplicationController.getTransactionController().getDraftController().activateDraftEntity(
-			//	that.getView().getBindingContext(), true, '/to_Activity' );
-
-			//});
 			
 		},
 		_navigateToWorkRequestList: function () { 
@@ -698,7 +852,7 @@ sap.ui.define([
         _setup: function () {
 			if (!this._oApplicationController) {
 				this._oApplicationController = new ApplicationController(this.oModel, this.getView());
-				//this._oApplicationController.attachEvent("beforeSideEffectExecution", this._onSideEffectsExecuted, this);
+				this._oApplicationController.attachEvent("beforeSideEffectExecution", this._onSideEffectsExecuted, this);
 			}
 			/*if (!this.NotificationConsequencePersistenceHelper) {
 				this._NotificationConsequencePersistenceHelper = new NotificationConsequencePersistenceHelper(this.getView());
@@ -728,50 +882,267 @@ sap.ui.define([
 				this.getView().setModel(this._oLongTextTemplateModel, "longTextTemplates");
 			}
 
-			// count for custom generated messages
-			// initialize EPM dialog
-			/*if (!this._oEPMDialog) {
-				var that = this;
-				this._oEPMDialog = new EventPrioritizationDialog();
-				this._oEPMDialog.attachEvent("apply", function (oEvent) {
-					// get prioritization profile
-					// open EPM 
-					that._oDraftHandler.showDraftSaving();
-					this._NotificationConsequencePersistenceHelper.saveEventPrioritisationDraftItem(oEvent.getParameter("selectedItems"));
-					this._NotificationConsequencePersistenceHelper.attachEvent("saved", function () {
-						that._oDraftHandler.showDraftSaved();
-					});
-					this._removeMessage("MaintPriority", this.messageType.Warning);
-					this._isEPMSelected = true;
-					var oDateInstance = DateFormat.getDateInstance({
-						UTC: true
-					});
-					var oDateTimeInstance = DateFormat.getDateTimeInstance({});
-					this.oModel.setProperty(this.getView().getBindingContext() + "/MaintPriority", oEvent.getParameter("priority"));
-					// this.oModel.setProperty(this.getView().getBindingContext() + "/MaintPriorityType", oEvent.getParameter("priorityType"));
-					this.oModel.setProperty(this.getView().getBindingContext() + "/LatestAcceptableCompletionDate",
-						oDateInstance.parse(oEvent.getParameter("lacdDate")));
-					this.oModel.setProperty(this.getView().getBindingContext() + "/MaintNotifRqdStartDateTime",
-						oDateTimeInstance.parse(oEvent.getParameter("requiredStartDate") + "T" + oEvent.getParameter("requiredStartTime")));
-					this.oModel.setProperty(this.getView().getBindingContext() + "/MaintNotifRqdEndDateTime",
-						oDateTimeInstance.parse(oEvent.getParameter("requiredEndDate") + "T" + oEvent.getParameter("requiredEndTime")));
-					this.oModel.firePropertyChange({
-						path: "MaintPriority",
-						context: this.getView().getBindingContext()
-					});
-					this.byId("createWrPriorityField").setBindingContext(null);
-					setTimeout(function () {
-						this.byId("createWrPriorityField").setBindingContext();
-					}.bind(this), 100);
-				}.bind(this));
-				//to get access to the global model
-				this.getView().addDependent(this._oEPMDialog);
-			} */
 
 			// initialize the Technical object valuehelp
 			this._fieldsWithErrors = 0;
 			// initialize epm selection boolean
 			this._isEPMSelected = false;
 		},
+		/** 
+		 * event handler for event before side effect execution 
+		 * @constructor 
+		 * @param oEvent 
+		 */
+		_onSideEffectsExecuted: function (oEvent) {
+			var oProperties = this._getPropertiesMap(["TechnicalObject", "TechObjIsEquipOrFuncnlLoc", "NotificationType", "MaintenancePlant"]);
+			// check if notification type was changed
+			var sNotifType = this.oModel.getProperty(this.getView().getBindingContext().getPath() + "/NotificationType");
+		/*	if (this.bNotificationTypeChanged) {
+				oProperties["NotificationType"] = "";
+				this.bNotificationTypeChanged = false;
+				this.getView().byId("createWrPriorityField").setEditable(true);
+			} else if (!sNotifType) {
+				this.getView().byId("createWrPriorityField").setEditable(false);
+			}*/
+			oEvent.getParameter("promise").then(function () {
+				/*if (this._propertiesChanged(["TechnicalObject", "TechObjIsEquipOrFuncnlLoc", "NotificationType", "MaintenancePlant"],
+						oProperties)) {
+					this._getLongTextTemplates().then(this._setLongtextTemplates.bind(this));
+				}*/
+				if (this._propertiesChanged(["TechnicalObject", "TechObjIsEquipOrFuncnlLoc"], oProperties)) {
+					this._setCurrentWorkRequestCount();
+				}
+			}.bind(this));
+		},
+		/** 
+		 * creates a map for array of properties from current binding context
+		 * @constructor 
+		 * @param aProperties
+		 * @returns
+		 */
+		_getPropertiesMap: function (aProperties) {
+			var oMap = {};
+			for (var i in aProperties) {
+				oMap[aProperties[i]] = this.getView().getBindingContext().getProperty(aProperties[i]);
+			}
+			return oMap;
+		},
+		/** 
+		 * checks if current context property values are different from oOldMap
+		 * @constructor 
+		 * @param aProperties
+		 * @param oOldMap
+		 * @returns
+		 */
+		_propertiesChanged: function (aProperties, oOldMap) {
+			for (var i in aProperties) {
+				if (this.getView().getBindingContext().getProperty(aProperties[i]) !== oOldMap[aProperties[i]]) {
+					return true;
+				}
+			}
+			return false;
+		},
+		/**
+		 * helper function to get the count of current work requests for the given
+		 *  TechnicalObject , TechnicalObjectType 
+		 *  only considers active entity and processingphase <= Constants.WORK_REQUEST_STATUS.CURRENT
+		 */
+		_setCurrentWorkRequestCount: function () {
+			var that = this;
+			if (!this.getView().getBindingContext()) {
+				return;
+			}
+			var oWorkRequest = this.getView().getBindingContext().getObject();
+			if  (oWorkRequest.TechnicalObject !== "" && oWorkRequest.TechObjIsEquipOrFuncnlLoc !== "") {
+				/**
+				 * Performance Improvement
+				 * private function to return field name for technical object filter
+				 * 
+				 */
+				var _techObjIsFLorEqui = function(){
+						if (oWorkRequest.TechObjIsEquipOrFuncnlLoc === Constants.FUNCTIONAL_LOCATION){
+							return "FunctionalLocation";
+						} else if (oWorkRequest.TechObjIsEquipOrFuncnlLoc === Constants.EQUIPMENT){
+							return "Equipment";
+						}
+				};
+				var aFilters = [new Filter({
+						path: "IsActiveEntity",
+						operator: FilterOperator.EQ,
+						value1: "true"
+					}),
+					new Filter({
+						path: _techObjIsFLorEqui(),
+						operator: FilterOperator.EQ,
+						value1: oWorkRequest.TechnicalObject
+					}),
+					new Filter({
+						path: "NotifProcessingPhase",
+						operator: FilterOperator.LE,
+						value1: Constants.WORK_REQUEST_STATUS.CURRENT
+					})
+				];
+				// FunctionalLocationName,Equipment
+				new Promise(function (resolve) {
+					that.oModel.read("/" + Constants.ENTITY.WORK_REQUEST_TP + "/$count", {
+						filters: aFilters,
+						success: function (sCount) {
+							return resolve(sCount);
+						}
+					});
+				}).then(function (sCount) {
+					that._oLocalViewModel.setProperty("/currentWorkRequests", sCount);
+				});
+			} else {
+				that._oLocalViewModel.setProperty("/currentWorkRequests", 0);
+			}
+		
+		},
+		/**
+		 * event handler for current work requests link in message bar
+		 */
+		onShowCurrentWorkRequests: function (oEvent) {
+			 var oNotification = this.getView().getBindingContext().getObject();
+			// navigate to current work requests view 
+			//this.getRouter().navTo("showCurrentWorkRequests", {}, true /*no history*/ );
+		//	var aFilters = AppController().buildFilterForNotifications(oNotification, Constants.GENERAL.COUNT_ALL_NOTIFICATIONS);
+		//that._sTechnicalObject = that._oWorkRequest.TechnicalObject;
+				//	that._sTechObjIsEquipOrFuncnlLoc = that._oWorkRequest.TechObjIsEquipOrFuncnlLoc;
+		
+		  var _techObjIsFLorEqui = function(){
+						if ( oNotification.TechObjIsEquipOrFuncnlLoc === Constants.FUNCTIONAL_LOCATION){
+							return "FunctionalLocation";
+						} else if ( oNotification.TechObjIsEquipOrFuncnlLoc === Constants.EQUIPMENT){
+							return "Equipment";
+						}
+				};
+					var aFilters = [
+						new Filter({
+							path: "IsActiveEntity",
+							operator: FilterOperator.EQ,
+							value1: true
+						}),
+						new Filter({
+							path: _techObjIsFLorEqui(),
+							operator: FilterOperator.EQ,
+							value1: oNotification.TechnicalObject
+						// }), new Filter({
+						// 	path: "TechObjIsEquipOrFuncnlLoc",
+						// 	operator: FilterOperator.EQ,
+						// 	value1: that._sTechObjIsEquipOrFuncnlLoc
+						}),
+						new Filter({
+							path: "NotifProcessingPhase",
+							operator: FilterOperator.LE,
+							value1: Constants.WORK_REQUEST_STATUS.CURRENT
+						})];
+			var _oUtil = new Util();
+			this.oCurrentNotifPopover = _oUtil.launchPopoverCurrentNotifications(oNotification, aFilters, oEvent.getSource(), this.getView());
+		},
+
+		onShowRecommendedTaskList: function (oEvent) {
+			var oContext = oEvent.getSource().getBindingContext();
+			var sTechnicalObject = oContext.getProperty("TechnicalObject");
+			var sFailureMode = oContext.getProperty("MaintNotificationCode") || "";
+
+			if (!sTechnicalObject && !sFailureMode) {
+				MessageToast.show(this._i18n("xmsg.technicalObjectAndFailureModeEmpty"));
+			} else {
+				this._showRecommendedTaskList();
+			}
+		},
+		onMNotificationItemPress: function (oEvent) {
+			var oContext = oEvent.getSource().getBindingContext();
+			var sMaintenanceNotification = oContext.getProperty("MaintenanceNotification");
+			 var oPopover = this.getView().byId("RespPopoverCurrentNotifs");
+			if (oPopover){
+				oPopover.close();
+			}
+			//var sMaintenanceNotificationItem = oContext.getProperty("MaintenanceNotificationItem");
+			if (sMaintenanceNotification) { 
+			//	var oNavigationController = this.extensionAPI.getNavigationController();
+			//	oNavigationController.navigateExternal("toMaintenanceNotification", {
+				//	MaintenanceNotification: sMaintenanceNotification
+				//});
+				this.navTo(Constants.ROUTES.DISPLAY, {
+				NotificationNumber: encodeURIComponent(sMaintenanceNotification)
+			});
+
+        
+			}		
+		},	
+		_showRecommendedTaskList: function () {
+			if (!this._pRecommendedTaskList) {
+				this._pRecommendedTaskList = this.loadFragment(
+					{ name: "pm11.zpm11nftcreate.view.fragments.RecommendedTaskList" }
+				).then(function (oDialog) {
+					this.byId("idTaskListSmartTable").setRequestAtLeastFields("MaintRecmdnTypeDescription,LongText");
+					this.getView().addDependent(oDialog);
+					this._oRecommendedTaskList = oDialog;
+					this._oRecommendedTaskListTable = this.byId("idTaskListResponsiveTable");
+				}.bind(this));
+			}
+
+			this._pRecommendedTaskList.then(function () {
+				this._oLocalViewModel.setProperty("/bEnableRecommendedSelection", false);
+				this._oRecommendedTaskListTable.removeSelections();
+				var oRecmdnsCtx = this._getTaskListRecommendationsContext();
+				this._oRecommendedTaskListTable.setBindingContext(oRecmdnsCtx);
+				this._oRecommendedTaskList.open();
+			}.bind(this));
+		},
+		_getTaskListRecommendationsContext: function () {
+			var oContext = this.getView().getBindingContext();
+			var sTechnicalObject = oContext.getProperty("TechnicalObject");
+			var sMaintNotificationCodeGroup = oContext.getProperty("MaintNotificationCodeGroup") || "";
+			var sFailureMode = oContext.getProperty("MaintNotificationCode") || "";
+			var sCatalogProfile = oContext.getProperty("CatalogProfile");
+			var sTechObjIsEquipOrFuncnlLoc = oContext.getProperty("TechObjIsEquipOrFuncnlLoc");
+			var sTableContextPath = this.oModel.createKey('/C_MaintWrkReqRecmddTskList', {
+				P_TechnicalObject: sTechnicalObject,
+				P_TechObjIsEquipOrFuncnlLoc: sTechObjIsEquipOrFuncnlLoc,
+				P_CatalogProfile: sCatalogProfile,
+				P_MaintRecmdnFailureModeGroup: sMaintNotificationCodeGroup,
+				P_MaintRecmdnFailureMode: sFailureMode,
+			});
+			return new Context(this.oModel, sTableContextPath);
+		},
+			onPressCloseRecommendedTaskList: function () {
+			this._oRecommendedTaskList.close();
+		},
+
+		onSelectionChangeTaskListTable: function () {
+			this._oLocalViewModel.setProperty("/bEnableRecommendedSelection", true);
+		},
+		onPressSumbitSelectionTaskList: function () {
+			var sSelectedTaskList = this._oRecommendedTaskListTable.getSelectedItem().getBindingContext().getProperty("TaskList");
+			var sTaskListPath = this.getView().getBindingContext().getPath() + "/TaskList";
+			this.oModel.setProperty(sTaskListPath, sSelectedTaskList);
+			this.oModel.submitChanges();
+			this._oRecommendedTaskList.close();
+		},
+		_handleRecommendationsVisibility: function () {
+			var oMetaModel = this.oModel.getMetaModel();
+			oMetaModel.loaded().then(function () {
+				if (!oMetaModel.getODataEntitySet(Constants.ENTITY.TASK_LIST_SET)) {
+					var oRecmdTaskListBtn = this.byId("createWrButtonRecommendedTaskList");
+					if (oRecmdTaskListBtn) {
+						oRecmdTaskListBtn.destroy();
+					}
+				}
+				if (!oMetaModel.getODataEntitySet(Constants.ENTITY.FAILURE_SET)) {
+					var oRecmdFailureModeBtn = this.byId("createWrButtonRecommendedFailureMode");
+					if (oRecmdFailureModeBtn) {
+						oRecmdFailureModeBtn.destroy();
+					}
+					var oRecmdFailureEffectBtn = this.byId("createWrButtonRecommendedFailureEffect");
+					if (oRecmdFailureEffectBtn) {
+						oRecmdFailureEffectBtn.destroy();
+					}
+				}
+			}.bind(this));
+		},
+		
+
     });
 });
