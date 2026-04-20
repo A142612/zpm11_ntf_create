@@ -1,0 +1,29 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:View 
+    busy="{appProperties>/busy}" 
+    busyIndicatorDelay="{appProperties>/delay}"
+	controllerName="pm11.zpm11nftcreate.controller.TechnicalObjectOverviewAttachments" 
+	xmlns:core="sap.ui.core" 
+	xmlns:l="sap.ui.layout"
+	xmlns:m="sap.m">
+	
+	<m:Text text="{i18n>xfld.noDocuments}" visible="{= ${/Attachments}.length + '' === '0'}"/>
+    <l:ResponsiveFlowLayout xmlns="sap.ui.layout" content="{/Attachments}" responsive="true">
+		<content>
+		  <m:ObjectListItem
+    			type="Active"
+    			icon="{parts : [{path : 'content_type'}], formatter : '.formatter.formatAttachmentIcon'}"
+    			press="onAttachmentClicked"
+                tooltip="{Filename}">
+             <m:attributes>
+                <m:ObjectAttribute text="{Filename}"/>
+             </m:attributes>         
+         </m:ObjectListItem>
+		</content>
+    </l:ResponsiveFlowLayout>  
+       
+</core:View>

@@ -500,7 +500,7 @@ sap.ui.define([
 				}
 			},
 			ignoreFromPersonalisation: "TechnicalObjectDescription," + this.constants.IGNORE_FROM_PERSONALIZATION + "," + this.constants.TEXT_FIELDS_TO_IGNORE,
-			requestAtLeastFields: this.constants.REQUEST_AT_LEAST_FIELDS + ",HierarchyNodeLevel" + ",AssetLocation" + ",LocationName",
+			requestAtLeastFields: this.constants.REQUEST_AT_LEAST_FIELDS + ",HierarchyNodeLevel" + ",AssetLocation" + ",LocationName" + ",SuperiorFLOCEquipment,SuperiorFLOCEquipmentName",
 			items: [this._getCustomFieldsTableFlat()]
 		});
 		this._oSmartTableFlat.addStyleClass("sapUiResponsiveMargin");

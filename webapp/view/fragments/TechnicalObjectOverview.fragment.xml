@@ -1,0 +1,125 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<ResponsivePopover id="pmNotifResponsivePopoverTechnicalObject"
+            title="{= ( ${TechnicalObjectType} === 'EAMS_EQUI'? 
+                            ${i18n>xtit.equipment} : ${i18n>xtit.floc} ) + ': ' + ${TechnicalObjectNumber}}"
+            showHeader="true"
+            placement="auto" 
+            contentWidth="40em">
+        <content>
+    		    <ObjectHeader icon="{thumbnail>/url}"
+    		              title="{TechnicalObjectNumber}" 
+    		              titleActive="false"
+    		              intro="{= ${CategoryDescription} + ' (' + ${Category} + ')'}"
+    		              responsive="true"/>    		              
+    			<!--Extension Point in TechnicalObjectOverview right after the ObjectHeader within the content of the Responsive Popover-->
+    			<core:ExtensionPoint name="extAfterObjectHeader" />
+    			
+        		<f:SimpleForm id="pmNotifSimpleFormTechObjOverview" 
+        				title="{i18n>xtit.technicalObjectDetails}"
+        		        editable="false" 
+        		        layout="ResponsiveGridLayout" 
+        		        class="createLayout"
+                        labelSpanL="3" 
+                        labelSpanM="3" 
+                        emptySpanL="0" 
+                        emptySpanM="0" 
+                        columnsS="1" 
+                        columnsL="1" 
+                        columnsM="1">
+        			<f:content>
+            			<!--Extension Point in TechnicalObjectOverview at the beginning of the form-->
+            			<core:ExtensionPoint name="extBeginForm" />        			    
+        			    
+        			    <!-- Technical Object Description -->
+        				<Label 
+        					id="pmNotifLabelTechnicalObjectDescription"
+        					text="{/#TechnicalObject/TechnicalObjectDescription/@sap:label}"
+        					visible="{path: 'TechnicalObjectDescription', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{TechnicalObjectDescription}" 
+        				        visible="{path: 'TechnicalObjectDescription', formatter: '.formatter.checkForValidValue'}"/>
+        				
+        				<!-- Technical Object Type -->
+                        <Label
+                        	id="pmNotifLabelTechnicalObjectType"
+                        	text="{/#TechnicalObject/ObjectType/@sap:label}"
+        					visible="{path: 'ObjectType', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{= ${ObjectTypeDescription} + ' (' + ${ObjectType} + ')'}"
+        				        visible="{path: 'ObjectType', formatter: '.formatter.checkForValidValue'}"/>        				       
+
+        				 <!-- Plant section -->
+        				<Label
+        					id="pmNotifLabelPlantSection"
+        					text="{/#TechnicalObject/PlantSection/@sap:label}"
+        					visible="{path: 'PlantSection', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{PlantSection}"
+        				        visible="{path: 'PlantSection', formatter: '.formatter.checkForValidValue'}"/>
+
+        				 <!-- Model Number -->
+        				<Label
+        					id="pmNotifLabelModelNumber"
+        					text="{/#TechnicalObject/ModelNumber/@sap:label}"
+        					visible="{path: 'ModelNumber', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{ModelNumber}"
+        				        visible="{path: 'ModelNumber', formatter: '.formatter.checkForValidValue'}"/>
+
+                        <!-- Manufacturer -->				
+        				<Label
+        					id="pmNotifLabelManufacturer"
+        					text="{/#TechnicalObject/Manufacturer/@sap:label}"
+        					visible="{path: 'Manufacturer', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text   text="{Manufacturer}"
+        				        visible="{path: 'Manufacturer', formatter: '.formatter.checkForValidValue'}"/>
+
+                        <!-- Location -->        				
+        				<Label
+        					id="pmNotifLabelLocation"
+        					text="{/#TechnicalObject/Location/@sap:label}"
+        					visible="{path: 'Location', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{Location}"
+        				        visible="{path: 'Location', formatter: '.formatter.checkForValidValue'}"/>
+                        
+                        <!-- Room -->        				
+        				<Label
+        					id="pmNotifLabelRoom"
+        					text="{/#TechnicalObject/Room/@sap:label}"
+        					visible="{path: 'Room', formatter: '.formatter.checkForValidValue'}"/>
+        				<Text text="{Room}"
+        				        visible="{path: 'Room', formatter: '.formatter.checkForValidValue'}"/>
+
+            			<!--Extension Point in TechnicalObjectOverview before the end of the form-->
+            			<core:ExtensionPoint name="extEndForm" /> 
+            			
+        				<!-- Additional Documents (Attachments) -->
+        				<Label
+        					id="pmNotifLabelAdditionalDocuments"
+        					text="{i18n>xfld.addDocuments}"/>
+        				<l:VerticalLayout>
+    						<l:content>
+    						    <!-- SubView for Attachments in Technical Object Overview-->
+                                <mvc:XMLView 
+                                    width="100%" 
+                                    class="createView" 
+                                    viewName="pm11.zpm11nftcreate.view.subview.TechnicalObjectOverviewAttachments" 
+                                    id="pmNotifViewTechnicalObjectOverviewAttachmentsSimple"/>
+    						</l:content>
+    						<l:layoutData>
+    							<l:GridData labelSpanL="0" labelSpanM="0" labelSpanS="0"/>
+    						</l:layoutData>
+					    </l:VerticalLayout>
+        			</f:content>
+        		</f:SimpleForm>
+    		
+        </content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

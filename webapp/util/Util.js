@@ -47,6 +47,29 @@ sap.ui.define([
 			return this._aDialogs[sUniqueId];
 
 		},
+		launchPopoverCurrentNotifList: function(oNotification, aFilterList, oSource, oParentView) {
+
+			//var oDataHelper = oParentView.getController().getOwnerComponent().oRootView.getController().getODataHelper();
+			var fnBeforeOpen = function(sId) {
+				// filter notifications
+				var oNotificationList = sap.ui.core.Fragment.byId(sId, "pmNotifListNotifications");
+				oNotificationList.getBinding("items").filter(aFilterList, sap.ui.model.FilterType.Application);
+	
+				// count notifications
+				//oDataHelper.countHistoryNotifications(oNotification, oParentView.getController().getModel(CONSTANTS.MODEL.VIEW_PROP.NAME), oParentView.getModel());					
+			};
+
+			var oPopover = this._launchPopover({
+					sFragmentName : "CurrentNotifList",
+					oParentView : oParentView,
+					oModel : oSource.getModel(),
+					fnBeforeOpen : fnBeforeOpen,
+					oSourceInt		: oSource,
+					bDelayedOpen : false });
+
+			return oPopover;
+		},
+
         
 		/**
 		* This function launches a Popover with a List of Notifications created for the 
@@ -117,10 +140,11 @@ sap.ui.define([
             
             // create a local model in order to prevent that errors are shown 
             //in the messages indicator if no thumbnail was found ...
-			var oModel = oParentView.getModel();
-			var oLocalModel = new sap.ui.model.odata.v2.ODataModel({
-				serviceUrl: oModel.sServiceUrl
-			});
+		//	var oModel = oParentView.getModel();
+		//	var oLocalModel = new sap.ui.model.odata.v2.ODataModel({
+		//		serviceUrl: oModel.sServiceUrl
+		//	});
+		 var oLocalModel = oParentView.getModel("EAM_NTF_CREATE");
 
    			// remove the listener for the messages from this local model
     		sap.ui.getCore().getMessageManager().unregisterMessageProcessor(oLocalModel);			
@@ -135,8 +159,9 @@ sap.ui.define([
 
             };
             // ==> check if a thumbnail exists in the backend                
-			var oDataHelper = oParentView.getController().getOwnerComponent().oRootView.getController().getODataHelper();
-			var sThumbnailPath = oDataHelper.getPathForTechnicalObjectThumbnailSet(sTechnObjectNumberWithZeros,sTechnObjectType);
+		//	var oDataHelper = oParentView.getController().getOwnerComponent().oRootView.getController().getODataHelper();
+		//	var sThumbnailPath = oDataHelper.getPathForTechnicalObjectThumbnailSet(sTechnObjectNumberWithZeros,sTechnObjectType);//TechnicalObjectThumbnailSet
+		var sThumbnailPath = "/TechnicalObjectThumbnailSet(TechnicalObjectNumber='" + sTechnObjectNumberWithZeros + "',TechnicalObjectType='" + sTechnObjectType + "')";
 			oLocalModel.read(sThumbnailPath ,{ success: fnThumbnailFound});
 			
 			var fnBeforeOpen = function(sId, oPopover) {
@@ -154,7 +179,9 @@ sap.ui.define([
 	            oPopover.refreshAttachments();				
 			};			
 			// ==> create the popover
-			var sContextPath = oDataHelper.getPathForTechnicalObjectSet(sTechnObjectNumber, sTechnObjectType);
+		//	var sContextPath = oDataHelper.getPathForTechnicalObjectSet(sTechnObjectNumber, sTechnObjectType);
+		 var sContextPath = "/TechnicalObjectSet(TechnicalObjectNumber='" + sTechnObjectNumber + "',TechnicalObjectType='" + sTechnObjectType + "')";
+		 //"/TechnicalObjectSet(TechnicalObjectNumber='" + encodeURIComponent(n) + "',TechnicalObjectType='" + encodeURIComponent(t) + "')";
 			var oPopover = this._launchPopover({
 					sFragmentName : "TechnicalObjectOverview",
 					oParentView : oParentView,

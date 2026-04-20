@@ -6,8 +6,9 @@ sap.ui.define([
 	"pm11/zpm11nftcreate/controller/BaseController",
 	"pm11/zpm11nftcreate/model/formatter",
 	"sap/m/MessageBox",
-	"sap/ui/model/json/JSONModel"
-], function (CONSTANTS, BaseController, formatter, MessageBox, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"pm11/zpm11nftcreate/util/Notifications",
+], function (CONSTANTS, BaseController, formatter, MessageBox, JSONModel, Notifications) {
 	"use strict";
 
 	return BaseController.extend("pm11.zpm11nftcreate.controller.DisplayExistingNotif", {
@@ -38,7 +39,7 @@ sap.ui.define([
 				delay: 0
 			});
 			this.getView().loaded().then(function() {
-				//this._oDataHelper = this.getODataHelper();
+				this._oDataHelper = this._oDataHelper = new Notifications(this.getOwnerComponent(), this.getView());
 			}.bind(this));
 
 			this.oShareModel = new JSONModel({
@@ -289,7 +290,7 @@ sap.ui.define([
 					onClose: function (oAction) {
 						if (oAction === MessageBox.Action.OK) {
 							that.setAppBusy();
-							//that._oDataHelper.deleteNotification(sNotificationNumber);
+							that._oDataHelper.deleteNotification(sNotificationNumber);
 						}
 					},
 					styleClass: bCompact ? "sapUiSizeCompact" : ""
@@ -399,7 +400,7 @@ sap.ui.define([
 						}
 
 						that._refreshViewPropertiesModel();
-						//that.getODataHelper().countOpenNotifications(that.getObject(), that._oViewProperties, that.getView().getModel());
+						that._oDataHelper.countOpenNotifications(that.getObject(), that._oViewProperties, that.getView().getModel());
 					}
 				}
 			});

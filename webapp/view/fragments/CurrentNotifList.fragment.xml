@@ -1,0 +1,64 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition 
+            xmlns="sap.m" 
+            xmlns:core="sap.ui.core" 
+            xmlns:l="sap.ui.layout" 
+            xmlns:f="sap.ui.layout.form">
+
+<ResponsivePopover 
+    title="{ formatter : '.formatter.formatCurrentNotificationLink', path : 'viewProperties>/openNotifCount' }"
+    showHeader="true"
+    placement="Bottom" 
+    contentWidth="{= ${device>/system/phone} ? 'auto' : '35em'}">
+  <content>
+    <!-- List of current notifications -->
+      <List
+        id="pmNotifListNotifications"
+		items="{
+			path: '/NotificationHeaderSet',
+			sorter: [
+				{ path: 'NotificationPhase',
+				descending: false,
+				group: true },
+				{ path: 'NotificationTimestamp',
+				descending: false }				
+			],
+			groupHeaderFactory: '.getGroupHeader'
+		}"        
+        growing="true" 
+        growingThreshold="20"
+        growingScrollToLoad="true"
+        visibleRowCountMode="Auto">
+        <items>
+          <ObjectListItem 
+              title="{NotificationNumber}"
+              type="Active"
+              press="onPressNotification">
+            <firstStatus>
+    			<ObjectStatus text="{SystemStatus}"/>
+            </firstStatus>
+            <secondStatus>        
+    			<ObjectStatus
+    						text="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToText'}"     
+    						state="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToState'}"
+    						icon="{path: 'DateMonitor', formatter: '.formatter.formatDateMonitorToIcon'}"/>
+            </secondStatus>
+            <attributes>
+            	<!-- Object attribute Reporter in list -->
+            	<ObjectAttribute id="pmNotifObjectAttributeReporter" text="{ReporterDisplay}" />
+            	<!-- Object attribute Short text in list -->
+            	<ObjectAttribute id="pmNotifObjectAttributeShortText" text="{ShortText}" />
+            	<!-- Object attribute Timestamp in list -->
+            	<ObjectAttribute id="pmNotifObjectAttributeTimestamp" 
+            					text="{ path: 'NotificationTimestamp', formatter: '.formatter.formatDateTimeToString' }" />
+            </attributes>
+          </ObjectListItem>
+        </items>
+      </List>
+  </content>
+</ResponsivePopover>
+</core:FragmentDefinition>

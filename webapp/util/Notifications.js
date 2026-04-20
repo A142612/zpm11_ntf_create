@@ -3,8 +3,11 @@
  */
 sap.ui.define([
 	"pm11/zpm11nftcreate/util/Constants",
-	"sap/ui/base/Object"
-], function (CONSTANTS, Object) {
+	"sap/ui/base/Object",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"pm11/zpm11nftcreate/util/Constants",
+], function (CONSTANTS, Object, Filter, FilterOperator, Constants) {
 	"use strict";
 
 	return Object.extend("pm11.zpm11nftcreate.util.Notifications", {
@@ -309,7 +312,24 @@ sap.ui.define([
 			}
 
 			// fetch filters via App-Controller (Filters are built in AppController)
-			var aFilters = this._oAppController.buildFilterForNotifications(oNotification, sType);
+			//var aFilters = this._oAppController.buildFilterForNotifications(oNotification, sType);
+			
+					var aFilters = [
+						new Filter({
+							path: "TechnicalObjectNumber",
+							operator: FilterOperator.EQ,
+							value1: oNotification.TechnicalObjectNumber
+						 }), new Filter({
+						 	path: "TechnicalObjectType",
+						 	operator: FilterOperator.EQ,
+						 	value1: oNotification.TechnicalObjectType
+						}),
+						new Filter({
+							path: "NotificationPhase",
+							operator: FilterOperator.BT,
+							value1: "0",
+    						value2: "3"
+						})];
 
 			// perform count
 			return this._countNotificationsWithModel(oNotification.TechnicalObjectNumber,

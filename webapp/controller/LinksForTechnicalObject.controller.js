@@ -5,8 +5,12 @@ sap.ui.define([
         "pm11/zpm11nftcreate/util/Constants",
 		"pm11/zpm11nftcreate/controller/BaseController",
 		"pm11/zpm11nftcreate/model/formatter",
-		"sap/m/GroupHeaderListItem"
-	], function(CONSTANTS, BaseController, formatter, GroupHeaderListItem) {
+		"sap/m/GroupHeaderListItem",
+		"pm11/zpm11nftcreate/util/Util",
+		"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"pm11/zpm11nftcreate/util/Constants",
+	], function(CONSTANTS, BaseController, formatter, GroupHeaderListItem, Util, Filter, FilterOperator, Constants) {
 
 	"use strict";
 
@@ -26,7 +30,9 @@ sap.ui.define([
 		onPressTechnicalObjectOverview: function(oEvent) {
 			var oNotification = this.getObject();
 
-			this.getUtil().launchPopoverTechnicalObjectOverview(
+			var _oUtil = new Util();
+
+			_oUtil.launchPopoverTechnicalObjectOverview(
 				oNotification.TechnicalObjectNumber,
 				oNotification.TecObjNoLeadingZeros,// technical object with leading zeros
 				oNotification.TechnicalObjectType,
@@ -42,8 +48,26 @@ sap.ui.define([
 		 */
 		onPressCurrentNotifications: function(oEvent) {
 			var oNotification = this.getObject();
-			var aFilters = this.getAppController().buildFilterForNotifications(oNotification, CONSTANTS.GENERAL.COUNT_ALL_NOTIFICATIONS);
-			this.oCurrentNotifPopover = this.getUtil().launchPopoverCurrentNotifications(oNotification, aFilters, oEvent.getSource(), this.getView());
+			var aFilters = [
+						new Filter({
+							path: "TechnicalObjectNumber",
+							operator: FilterOperator.EQ,
+							value1: oNotification.TechnicalObjectNumber
+						 }), new Filter({
+						 	path: "TechnicalObjectType",
+						 	operator: FilterOperator.EQ,
+						 	value1: oNotification.TechnicalObjectType
+						}),
+						new Filter({
+							path: "NotificationPhase",
+							operator: FilterOperator.BT,
+							value1: "0",
+    						value2: "3"
+						})];
+			
+			//var aFilters = this.getAppController().buildFilterForNotifications(oNotification, CONSTANTS.GENERAL.COUNT_ALL_NOTIFICATIONS);
+			var _oUtil = new Util();
+			this.oCurrentNotifPopover = _oUtil.launchPopoverCurrentNotifList(oNotification, aFilters, oEvent.getSource(), this.getView());
 			//clear the marker that current/history entry was found, necessary for grouping headers
 			this._bCurrentEntryFound = false;
 			this._bHistoryEntryFound = false;
