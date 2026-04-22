@@ -43,7 +43,7 @@
 
 
 							<smartForm:GroupElement id="createWrSmartGroupElementTitle">
-								<smartField:SmartField id="createWrSmartFieldTitle" mandatory="true" clientSideMandatoryCheck="false" value="{ path: 'NotificationText'}"
+								<smartField:SmartField id="createWrSmartFieldTitle" mandatory="true" clientSideMandatoryCheck="false" value="{ path: 'NotificationText'}" change=".onNotificationTextChanged"
 									placeholder="{i18n>xfld.description}"></smartField:SmartField>
 							</smartForm:GroupElement>
 
@@ -60,7 +60,7 @@
 									change=".onLongTextChanged"></smartField:SmartField>
 							</smartForm:GroupElement>
 							<smartForm:GroupElement id="createWrSmartGroupElementPriority" label='{MaintPriority/#@sap:label}'>
-								<smartField:SmartField id="createWrPriorityField" value="{ path: 'MaintPriority' }" placeholder="{i18n>xfld.priority}" innerControlsCreated="._sortPriority" showValueHelp="false"
+								<smartField:SmartField id="createWrPriorityField"  mandatory="true" value="{ path: 'MaintPriority' }" placeholder="{i18n>xfld.priority}" innerControlsCreated="._sortPriority" showValueHelp="false"
 									change=".onPriorityChanged">
 									<smartField:configuration>
 										<smartField:Configuration id="createWrPriorityFieldControlConfiguration" controlType="dropDownList"/>
@@ -249,6 +249,11 @@
 								<smartField:SmartField id="createWrSmartFieldReportedOnDateTime" value="{NotificationCreationDateTime}"></smartField:SmartField>
 							</smartForm:GroupElement>
 
+							<smartForm:GroupElement id="createWrSmartGroupElementPlannerGroup" >
+								<smartField:SmartField id="createWrSmartFieldPlannerGroup" textInEditModeSource="ValueListNoValidation"  clientSideMandatoryCheck="false" value="{ path: 'MaintenancePlannerGroup'}"
+									placeholder="{i18n>xfld.PlannerGroup}"></smartField:SmartField>
+							</smartForm:GroupElement>
+
 							<smartForm:GroupElement id="createWrSmartGroupElementMainWC" >
 								<smartField:SmartField id="createWrSmartFieldMainWC" textInEditModeSource="ValueListNoValidation"  clientSideMandatoryCheck="false" value="{ path: 'MainWorkCenter'}"
 									placeholder="{i18n>xfld.mainWrkCenter}"></smartField:SmartField>
@@ -270,7 +275,7 @@
 				<Button id="createWrMessageIndicator" text="{= ${message>/}.length }" visible="{=!!${message>/}.length}"
 					icon="{ path: 'message>/', formatter: '.formatter.buttonIconFormatter' }"
 					type="{ path: 'message>/', formatter: '.formatter.buttonTypeFormatter' }" enabled="true" press="onMessagesButtonPress"></Button>
-				<DraftIndicator id="createWrDraftIndicator"></DraftIndicator>
+				<!-- <DraftIndicator id="createWrDraftIndicator"></DraftIndicator> -->
 				<ToolbarSpacer id="createWrOverflowToolbarSpacer"/>
 				<Button id="createWrSubmitButton" tooltip="{i18n>xbut.submit}" text="{i18n>xbut.submit}" type="Emphasized" enabled="true" visible="true"
 					press="onPressSave"/>

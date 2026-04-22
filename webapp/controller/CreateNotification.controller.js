@@ -13,8 +13,10 @@ sap.ui.define([
     "pm11/zpm11nftcreate/util/DraftHandler",
 	"pm11/zpm11nftcreate/controls/TechnicalObjectValueHelp",
 	"pm11/zpm11nftcreate/util/Util",
-	"sap/ui/model/odata/v2/ODataModel"
-], (Controller, MessageToast, JSONModel, Filter, FilterOperator, formatter, Message, Library, BaseController, Constants, ApplicationController, DraftHandler,TechnicalObjectValueHelp, Util, ODataModel) => {
+	"sap/ui/model/odata/v2/ODataModel",
+	"sap/ui/core/routing/History",
+	"sap/m/MessageBox",
+], (Controller, MessageToast, JSONModel, Filter, FilterOperator, formatter, Message, Library, BaseController, Constants, ApplicationController, DraftHandler,TechnicalObjectValueHelp, Util, ODataModel, History, MessageBox) => {
     "use strict";
 
     return BaseController.extend("pm11.zpm11nftcreate.controller.CreateNotification", {
@@ -36,6 +38,9 @@ sap.ui.define([
 		_sNewDetectionMethodText: "",
 		// local json model
 		_oLocalViewModel: null,
+		
+	
+		// shell navigation handler
 		// faikure mode smartfield
 		_oFailureModeField: null,
 		// failure mode group smartfield
@@ -79,13 +84,33 @@ sap.ui.define([
 
             oRouter.getRoute("RouteCreateNotification").attachMatched(this.onCreateWorkRequestMatched, this);
             oRouter.getRoute("draft").attachMatched(this.onDraftRouteMatched, this);
-
+			//oRouter.attachBypassed(this._discardActiveDraft, this);
+			//window.addEventListener("beforeunload", this._onBeforeUnload.bind(this));
+			
+		
 			// set message model
 			var oMessageManager = sap.ui.getCore().getMessageManager();
 			this.getView().setModel(oMessageManager.getMessageModel(), "message");
 			//Register the view by the message manager
 			oMessageManager.registerObject(this.getView(), true);
         },
+
+		onAfterRendering: function () {
+			var oBackBtn = sap.ui.getCore().byId("backBtn");
+			if (oBackBtn) {
+				oBackBtn.attachPress(this._discardActiveDraftSync.bind(this));
+			 }
+			
+			// Attach click listener to home logo button
+			var oHomeBtn = document.querySelector('[id="shell-header-logo"]');
+			if (oHomeBtn) {
+				// Store the bound function reference for later removal
+				if (!this._homeLogoClickHandler) {
+					this._homeLogoClickHandler = this._discardActiveDraftSync.bind(this);
+				}
+				oHomeBtn.addEventListener('click', this._homeLogoClickHandler);
+			}
+    },
 		/** 
 		 * function is called to fire the attachChange event for long text
 		 */
@@ -141,26 +166,106 @@ sap.ui.define([
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 		 */
 		onExit: function () {
-			if (this._oTechnicalObjectValueHelp) {
-				this._oTechnicalObjectValueHelp.destroy();
-			}
-			if (this._oEPMDialog) {
-				this._oEPMDialog.destroy();
-			}
-			if (this._oCatalogProfileBinding) {
-				this._oCatalogProfileBinding.destroy();
-			}
-			if (this._oMaintNotificationCatalogBinding) {
-				this._oMaintNotificationCatalogBinding.destroy();
-			}
-			if (this._oDetectionCodeBinding) {
-				this._oDetectionCodeBinding.destroy();
-			}
-			if (this._oDraftHandler) {
-				this._oDraftHandler.destroy();
-			}
-
+			// Discard draft and wait 3 seconds for OData call to complete
+		//	this._discardActiveDraftSync();
+			
+			
+		
+				if (this._oTechnicalObjectValueHelp) {
+					this._oTechnicalObjectValueHelp.destroy();
+				}
+				if (this._oEPMDialog) {
+					this._oEPMDialog.destroy();
+				}
+				if (this._oCatalogProfileBinding) {
+					this._oCatalogProfileBinding.destroy();
+				}
+				if (this._oMaintNotificationCatalogBinding) {
+					this._oMaintNotificationCatalogBinding.destroy();
+				}
+				if (this._oDetectionCodeBinding) {
+					this._oDetectionCodeBinding.destroy();
+				}
+				if (this._oDraftHandler) {
+					this._oDraftHandler.destroy();
+				}
+				
+				// Remove home logo click listener to prevent memory leaks
+				var oHomeBtn = document.querySelector('[id="shell-header-logo"]');
+				if (oHomeBtn && this._homeLogoClickHandler) {
+					oHomeBtn.removeEventListener('click', this._homeLogoClickHandler);
+				}
 		},
+
+
+
+	_discardActiveDraftSync: function () {
+		var oBindingContext = this.getView().getBindingContext();
+		if (oBindingContext) {
+			var oModel = this.getView().getModel();
+			var sDraftUUID = oBindingContext.getProperty("DraftUUID");
+			
+			// Request CSRF token first, then send discard request with token
+			var that = this;
+			oModel.securityTokenAvailable().then(function() {
+				var sServiceUrl = oModel.sServiceUrl;
+				var sUrl = sServiceUrl + "/xPM11x_MaintenanceNotificationDiscard?MaintenanceNotification=''&IsActiveEntity=false&DraftUUID=guid'" + sDraftUUID + "'";
+				var sCsrfToken = oModel.getSecurityToken();
+				
+				// Prepare the request payload
+				/*var oPayload = {
+					MaintenanceNotification: "",
+					IsActiveEntity: false,
+					DraftUUID: sDraftUUID
+				};*/
+				
+				// Use fetch with keepalive flag and CSRF token
+				try {
+					fetch(sUrl, {
+						method: "POST",
+						keepalive: true,  // Critical: ensures request completes on unload
+						headers: {
+							"Content-Type": "application/json",
+							"X-CSRF-Token": sCsrfToken || "Fetch"
+						},
+						//body: JSON.stringify(oPayload),
+						credentials: "same-origin"
+					}).catch(function(e) {
+						console.warn("Draft discard error: ", e);
+					});
+				} catch (e) {
+					console.warn("Failed to discard draft: ", e);
+				}
+			}).catch(function(e) {
+				console.warn("CSRF token not available: ", e);
+			});
+		}
+	},
+
+	
+		_discardActiveDraft: function () {
+		var oBindingContext = this.getView().getBindingContext();
+		if (oBindingContext) {
+		//	var oContextToDiscard = oBindingContext.getPath();
+		//	this._oApplicationController.getTransactionController().deleteEntity(oContextToDiscard, null, true /*Lenient*/ );
+			var oModel = this.getView().getModel();
+			var oContextToDiscard = oBindingContext.getPath();
+			var urlParameters = {
+				MaintenanceNotification: "",
+				IsActiveEntity: false,
+				DraftUUID: oBindingContext.getProperty("DraftUUID")
+			};
+			oModel.callFunction('/xPM11x_MaintenanceNotificationDiscard', {
+				method: "POST",
+				urlParameters: urlParameters
+			}); 
+
+		}
+	},
+
+	
+
+
         onCreateWorkRequestMatched: function (oEvent) {
 			var that = this;
 			this._setup();
@@ -245,7 +350,7 @@ sap.ui.define([
 			// attach Model Events
 			that.oModel.attachRequestSent(that.onRequestSent, that);
 
-			that._oDraftHandler.registerDraftIndicator(that.getView().byId("createWrDraftIndicator"), that.sEntityPath);
+		//	that._oDraftHandler.registerDraftIndicator(that.getView().byId("createWrDraftIndicator"), that.sEntityPath);
 
 			
 			this.getView().bindElement({
@@ -800,7 +905,25 @@ sap.ui.define([
 		 */
 		onPressCancel: function (oEvent) {
 			// show discard draft popover
-			this._oDraftHandler.confirmDiscardDraft(oEvent.getSource(), true);
+			//this._oDraftHandler.confirmDiscardDraft(oEvent.getSource(), true);
+			 this._oDraftHandler.discard(this.getView().getBindingContext()).then(function () {
+				if (sap.ushell && sap.ushell.Container) {
+						var oHistory = History.getInstance();
+						if (oHistory.getPreviousHash() !== undefined) {
+							window.history.back(-1);
+						} else {
+							// navigate to My work Requestrs
+							var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+							if (oCrossAppNavigator) {
+								oCrossAppNavigator.toExternal({
+									target: {
+										shellHash: "#Shell-home"
+									}
+								});
+							}
+						}
+					}
+			}.bind(this));
 		},
 
 		/*
@@ -841,21 +964,21 @@ sap.ui.define([
 		onPressMyDraft: function(oEvent){
 					var oParams = {},
 						sMessage=this._i18n("xmsg.savingDraftMsg");
-					//	oParams.DraftContext = false;
+						oParams.CreatedByUser =  this._sCurUserId;
 						this.bcreateNew = false;
-					if(!this.bdigDraftBtn){
+					/*if(!this.bdigDraftBtn){
 					MessageToast.show(sMessage, {
 					closeOnBrowserNavigation: false
 					});
-					}
+					}*/
 					var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 						if (oCrossAppNavigator) {
 							oCrossAppNavigator.toExternal({
 								target: {
 									semanticObject: "MaintenanceNotification",
-								   action: "list_simple"
-								}
-								//params: oParams
+								   action: "displayFactSheet"
+								},
+								params: oParams
 							});
 						}
 				
@@ -901,6 +1024,8 @@ sap.ui.define([
 				this.getView().setBusy(false);
 			}.bind(this)).catch(function () {
 				this.getView().setBusy(false);
+				var sErrorMessage = this._getMessageText(oResponse);
+				MessageBox.error(sErrorMessage);
 			}.bind(this));
 		},
 		/** 
@@ -937,6 +1062,7 @@ sap.ui.define([
 		_checkBeforeSave: function () {
 			// Check smart fields for client errors before saving (mandatory fields, wrong input types) 
 			this.getView().byId("createWrSmartFormTechnical").check();
+			this._checkTechnicalFormErrors(); 
 			//this.getView().byId("createWrSmartFormGeneral").check();
 			if (this.getView().byId("createWrPanelGeneral").getVisible()) {
 			this._checkGenearlFormErrors(); 
@@ -981,7 +1107,27 @@ sap.ui.define([
 				}
 			}
 		},
+
+		_checkTechnicalFormErrors: function () {
+			var oNotificationTextField = this.byId("createWrSmartFieldTitle");
+			if (oNotificationTextField&&oNotificationTextField.getMandatory()) {
+				var sValue = oNotificationTextField.getInnerControls()[0].getValue();
+				if (!sValue || sValue.trim() === "") {
+					this._createMessage("NotificationText", this._i18n("xmsg.notificationTextMandatory"), this.messageType.Error);
+				}
+			}
+
+			var oMaintPriorityField = this.byId("createWrPriorityField");
+			if (oMaintPriorityField&&oMaintPriorityField.getMandatory()) {
+				var sValue = oMaintPriorityField.getInnerControls()[0].getSelectedKey();
+				if (!sValue || sValue.trim() === "") {
+					this._createMessage("MaintPriority", this._i18n("xmsg.maintPriorityMandatory"), this.messageType.Error);
+				}
+			}	
+		},
 		_checkGenearlFormErrors: function () {
+
+			
 
 			var oFailureModeCodeGroupField = this.byId("createWrSmartFieldFailureModeGroup");
 			if (oFailureModeCodeGroupField&&oFailureModeCodeGroupField.getMandatory()) {
@@ -1024,6 +1170,23 @@ sap.ui.define([
 				this._createMessage("MaintNotifProcessSubPhaseCode", this._i18n("xmsg.detectionCodeMandatory"), this.messageType.Error);
 			}
 		}
+		},
+
+		onNotificationTextChanged: function (oEvent) {
+			var oInput = oEvent.getSource().getInnerControls()[0];
+			var sValue = oInput.getValue();
+			if (sValue && sValue.trim() !== "") {
+				this._removeMessage("NotificationText");
+			}
+		},
+
+		onPriorityChanged: function (oEvent) {
+			var oComboBox = oEvent.getSource().getInnerControls()[0];
+		   if (oComboBox.getSelectedKey() === "") {
+				this._createMessage("MaintPriority", this._i18n("xmsg.maintPriorityMandatory"), this.messageType.Error);
+			} else {
+				this._removeMessage("MaintPriority");
+			}
 		},
 
 		onFailureModeGroupChanged: function (oEvent) {
@@ -1114,7 +1277,7 @@ sap.ui.define([
 			this.getView().getModel().create("/xPM11x_MAINTNOTIFACTIVITY", oDefaultParams, {
 				success: function () {
 					// activity draft created successfully
-					that._navigateToWorkRequestList();
+					that._navigateToWorkRequestList(sNotifId);
 				}.bind(this),
 				error: function (oResponse) {
 					// error creating activity draft
@@ -1125,48 +1288,38 @@ sap.ui.define([
 			});
 				}.bind(this)
 			});
-		}else{				this._navigateToWorkRequestList();}
+		}else{				this._navigateToWorkRequestList(sNotifId);}
 			}
 			
 			
 		},
-		_navigateToWorkRequestList: function () { 
-
-         sap.ushell.Container.getService("Personalization").getContainer("NotificationParams")
-				.fail(function () {
-					Log.error("Loading personalization data failed.");
-				})
-				.done(function (oContainer) {
-					var oParamValues = oContainer.getItemValue("params");
-					if (oParamValues && oParamValues.ObjId) {
-						oParamValues.Notification = sNotifId;
-						oContainer.setItemValue("params", oParamValues);
-						oContainer.save(); // validity = 0 = transient, no roundtrip  
-					}
-				}.bind(this));
-			if (sap.ushell && sap.ushell.Container) {
-
-				if (this._oStartupParameters && this._oStartupParameters.preferredMode && this._oStartupParameters.preferredMode[0] === "create") {
-					window.history.back(-1);
-				} else {
-					var oParams = {};
-					
-						//generic notif created 
-						oParams.ProcessingContext = false;
-					
-					var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-					if (oCrossAppNavigator) {
-						oCrossAppNavigator.toExternal({
-							target: {
-								semanticObject: "MaintenanceNotification",
-								action: "list_simple"
+		_navigateToWorkRequestList: function (sNotifId) { 
+			if (sNotifId) { 
+             MessageBox.success("Notification " + sNotifId + " created successfully.", {
+				actions: ["Create Another", "Return"],
+				emphasizedAction: "Manage Products",
+				onClose: function (sAction) {
+					if (sAction === "Create Another") {
+						//window.history.back(-1);
+						//reload the app to create another notification
+				  //  this.getRouter().navTo("RouteCreateNotification", {}, true /*no history*/ );
+				//	this.getView().getModel().refresh(true);
+						window.location.reload();
+					} else if (sAction === "Return") {
+						var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+							if (oCrossAppNavigator) {
+								oCrossAppNavigator.toExternal({
+									target: {
+										shellHash: "#Shell-home"
+									}
+								});
 							}
-							//params: oParams
-						});
 					}
-				}
-			}
+				}.bind(this),
+				dependentOn: this.getView()
+			});
 
+			}
 		},
 
         _setup: function () {
@@ -1514,6 +1667,37 @@ sap.ui.define([
 				this._oPM11TaskListDialog.close();
 			}else{
 				MessageToast.show(this._i18n("xmsg.pleaseSelectTaskList"));
+			}
+		},
+
+		onPressTasklist: function (oEvent) {
+			
+			var oContext = oEvent.getSource().getBindingContext();
+			var sTaskList = oContext.getProperty("ObjectExternalID");
+			if (sTaskList) {
+				var aTaskList = sTaskList.split("-");
+				// Format date as ISO string (YYYY-MM-DD)
+				var oDate = new Date();
+				var sFormattedDate = oDate.getFullYear() + "-" + 
+									  String(oDate.getMonth() + 1).padStart(2, "0") + "-" + 
+									  String(oDate.getDate()).padStart(2, "0");
+				
+				var oParams = {
+					 P_KeyDate: sFormattedDate,
+					TaskListType: aTaskList[0]? aTaskList[0]:"",
+                       TaskListGroup: aTaskList[1]? aTaskList[1]:"",
+                       TaskListGroupCounter: aTaskList[2]? aTaskList[2]:"",
+				};
+				var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+					if (oCrossAppNavigator) {
+						oCrossAppNavigator.toExternal({
+							target: {
+								semanticObject: "MaintenanceTaskList",
+							   action: "displayFactSheet"
+								},
+								params: oParams
+							});
+						}
 			}
 		},
 

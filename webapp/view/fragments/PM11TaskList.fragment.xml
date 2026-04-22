@@ -36,24 +36,24 @@
                 </table:template>
             </table:Column>
 
-              <!-- <table:Column>
-                <Label text="HierarchyLevel"/>
+              <table:Column>
+                <Label text="Planner Group"/>
                 <table:template>
-                    <Text text="{HierarchyLevel}" wrapping="false" />
+                    <Text text="{ResponsiblePlannerGroup}" wrapping="false" />
                 </table:template>
             </table:Column>
 
             <table:Column>
-                <Label text="NodeID"/>
+                <Label text="Work Center"/>
                 <table:template>
-                    <Text text="{ObjectID}" wrapping="false" />
+                    <Text text="{WorkCenter}" wrapping="false" />
                 </table:template>
             </table:Column>
 
-            <table:Column>
-                <Label text="ParentNodeID"/>
+            <!--<table:Column>
+                <Label text="View"/>
                 <table:template>
-                    <Text text="{ParentObjectID}" wrapping="false" />
+                    <Button icon="sap-icon://display" type="Transparent" press=".onPressTasklist" visible="{=%{ObjectType} === 'T'}"/>
                 </table:template>
             </table:Column>-->
 

@@ -187,6 +187,8 @@ sap.ui.define([
 				Prefer: "handling=" + sHandling
 			};
 			oContext = new sap.ui.model.Context(this.oView.getModel(), sPath);
+			this.oContext = oContext;
+			this._checkContext(true);
 			return this._callDiscard(oContext, mParameters);
 		},
 		_callDiscard: function (oContext, mParameters) {
